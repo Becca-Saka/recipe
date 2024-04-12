@@ -19,6 +19,9 @@ class AppInput extends StatelessWidget {
         hintText: hintText,
         hintStyle: AppTextStyle.medium10.copyWith(
           fontSize: 14,
+          color: const Color(
+            0xFFA9ADB2,
+          ),
         ),
         fillColor: const Color(0xFF1E1F20),
         border: OutlineInputBorder(

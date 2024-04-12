@@ -7,14 +7,14 @@ import 'package:recipe/shared/widget/app_button.dart';
 import 'package:recipe/shared/widget/app_input.dart';
 import 'package:recipe/shared/widget/custom_app_bar.dart';
 
-class CollectRecipeView extends StatefulWidget {
-  const CollectRecipeView({super.key});
+class CollectIngredientView extends StatefulWidget {
+  const CollectIngredientView({super.key});
 
   @override
-  State<CollectRecipeView> createState() => _CollectRecipeViewState();
+  State<CollectIngredientView> createState() => _CollectIngredientViewState();
 }
 
-class _CollectRecipeViewState extends State<CollectRecipeView> {
+class _CollectIngredientViewState extends State<CollectIngredientView> {
   @override
   void initState() {
     super.initState();

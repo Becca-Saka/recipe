@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/firebase_options.dart';
 import 'package:recipe/providers/recipe_provider.dart';
-import 'package:recipe/ui/collect_recipe_view.dart';
+import 'package:recipe/ui/collect_ingredient_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,7 @@ class MainApp extends StatelessWidget {
           brightness: Brightness.dark,
           fontFamily: 'SF Pro',
         ),
-        home: const CollectRecipeView(),
+        home: const CollectIngredientView(),
       ),
     );
   }
