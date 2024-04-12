@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
+import 'package:recipe/shared/app_image.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
 import 'package:recipe/shared/extensions/string.dart';
@@ -40,16 +41,16 @@ class ConfirmIngredientView extends StatelessWidget {
                       itemCount: controller.ingredientList.length,
                       itemBuilder: (context, index) {
                         final item = controller.ingredientList[index];
+
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
                           leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              height: 58,
-                              width: 58,
-                              color: Colors.brown,
-                            ),
-                          ),
+                              borderRadius: BorderRadius.circular(12),
+                              child: AppImage(
+                                height: 58,
+                                width: 58,
+                                imageUrl: item.imageUrl,
+                              )),
                           title: Text(item.name.toTitleCase),
                           subtitle: Text(
                             '${item.quantity} ${item.unit}',

@@ -68,11 +68,11 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                       //     : null,
                       background: Stack(
                         children: [
-                          const Positioned.fill(
+                          Positioned.fill(
                             child: AppHero(
-                              tag: 'hero 0',
-                              child: AppImage(
-                                imageUrl: 'movie.imgUrl!',
+                              tag: recipe.name,
+                              child: const AppImage(
+                                imageUrl: '',
                                 width: 142,
                                 height: 212,
                                 radius: 0,
@@ -102,7 +102,8 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                                       suffix: const AppIcon(
                                         icon: AppIconData.film,
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () =>
+                                          controller.searchYoutube(context),
                                     ),
                                     const AppSpacing(h: 6),
                                     AppButton(
@@ -242,7 +243,7 @@ class BackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: InkWell(
         onTap: () {
           Navigator.pop(context);

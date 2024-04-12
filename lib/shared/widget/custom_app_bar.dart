@@ -8,9 +8,11 @@ class CustomAppBar extends StatelessWidget {
     super.key,
     this.waterMarked = true,
     required this.title,
+    this.waterMark,
   });
   final bool waterMarked;
   final String title;
+  final Widget? waterMark;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -33,21 +35,22 @@ class CustomAppBar extends StatelessWidget {
             ),
             const Spacer(),
             if (waterMarked)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Powered by ',
-                    style: AppTextStyle.medium10,
+              waterMark ??
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Powered by ',
+                        style: AppTextStyle.medium10,
+                      ),
+                      Image.asset(
+                        'assets/images/gemini_logo.png',
+                        height: 19,
+                        width: 39,
+                      ),
+                    ],
                   ),
-                  Image.asset(
-                    'assets/images/gemini_logo.png',
-                    height: 19,
-                    width: 39,
-                  ),
-                ],
-              ),
           ],
         ),
       ),

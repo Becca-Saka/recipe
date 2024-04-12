@@ -1,9 +1,13 @@
 import 'package:recipe/shared/extensions/double.dart';
+import 'package:recipe/shared/extensions/string.dart';
 
 class Ingredient {
   final String name;
   final dynamic rawQuantity;
   final String unit;
+  String get imageUrl =>
+      "https://img.spoonacular.com/ingredients_100x100/${name.imagify}.jpg";
+  // final String imageUrl;
 
   String get quantity =>
       rawQuantity is num ? (rawQuantity as num).removeDecimalZero : rawQuantity;
@@ -57,7 +61,7 @@ class Recipe {
       'name': name,
       'cookTime': cookTime,
       'description': description,
-      'instructions': instructions,
+      'instructions': instructions.isNotEmpty ? instructions : instruction,
       'tips': tips,
       'ingredients': ingredients.map((x) => x.toJson()).toList(),
     };

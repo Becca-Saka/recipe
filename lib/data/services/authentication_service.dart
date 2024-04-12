@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/data/exceptions/auth_exception.dart';
+import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
 
 class AuthenticationsService {
@@ -99,5 +100,43 @@ class AuthenticationsService {
 
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  Future<void> saveUserRecipeData(List<Recipe> recipes) async {
+    final uid = _auth.currentUser!.uid;
+
+    try {
+      for (var recipe in recipes) {
+        final doc = _firestore.collection('Recipes').doc();
+        await doc.set(
+          {
+            'id': doc.id,
+            'userId': uid,
+            ...recipe.toJson(),
+          },
+        );
+      }
+    } on Exception catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
+  }
+
+  Future<List<Recipe>> getUserRecipeData() async {
+    final uid = _auth.currentUser!.uid;
+
+    try {
+      final result = await _firestore
+          .collection('Recipes')
+          .where('userId', isEqualTo: uid)
+          .get();
+      if (result.docs.isNotEmpty) {
+        return result.docs.map((e) => Recipe.fromJson(e.data())).toList();
+      }
+    } on Exception catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
+    return [];
   }
 }

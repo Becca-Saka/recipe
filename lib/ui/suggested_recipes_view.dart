@@ -60,7 +60,7 @@ class SuggestedRecipesView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 AppHero(
-                                  tag: 'hero $index',
+                                  tag: item.name,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
                                     child: Container(

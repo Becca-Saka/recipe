@@ -2,23 +2,30 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:recipe/data/models/ingredients.dart';
+import 'package:recipe/data/models/youtube_model.dart';
+import 'package:recipe/data/services/api_service.dart';
+import 'package:recipe/data/services/authentication_service.dart';
 import 'package:recipe/data/services/gemini_service.dart';
 import 'package:recipe/data/services/speech_to_text_service.dart';
 import 'package:recipe/shared/custom_json_parser.dart';
 import 'package:recipe/ui/confirm_ingredient_view.dart';
 import 'package:recipe/ui/recipe_details_view.dart';
 import 'package:recipe/ui/suggested_recipes_view.dart';
+import 'package:recipe/ui/suggested_video.dart';
+import 'package:recipe/ui/youtube_player.dart';
 
 class RecipeProvider extends ChangeNotifier {
   final SpeechToTextService _speechToTextService = SpeechToTextService();
   final TextEditingController textEditingController = TextEditingController();
   final GeminiService _germiniServices = GeminiService();
+  final AuthenticationsService _authenticationsService =
+      AuthenticationsService();
   ScrollController controller = ScrollController();
   bool get _loading => _germiniServices.loading.value;
   List<Ingredient> ingredientList = [];
   List<Recipe> recipeList = [];
+  List<YoutubeSearchItem> youtubeData = [];
   Recipe? selectedRecipe;
   String spokenText = '';
   String resultText = '';
@@ -30,6 +37,10 @@ class RecipeProvider extends ChangeNotifier {
   }
 
   void _initGemini() => _germiniServices.init();
+  void _setLoading(bool value) {
+    loading = value;
+    notifyListeners();
+  }
 
   Future<void> getIngredients(context) async {
     final message = textEditingController.text;
@@ -37,20 +48,17 @@ class RecipeProvider extends ChangeNotifier {
     bool canSendMessage =
         hasValidMessage && _speechToTextService.isNotListening && !_loading;
     if (canSendMessage) {
-      loading = true;
-      notifyListeners();
+      _setLoading(true);
       await _germiniServices.generateContent(
         message: message,
         onSuccess: (text) {
-          loading = false;
           resultText = text;
 
-          notifyListeners();
+          _setLoading(false);
           _getIngredient(text, context);
         },
         onError: (error) {
-          loading = false;
-          notifyListeners();
+          _setLoading(false);
           _showError(error, context);
         },
       );
@@ -78,12 +86,13 @@ class RecipeProvider extends ChangeNotifier {
     log(text);
     // text = datawe;
     final firstJsonBracket = text.indexOf('{');
-    final lastJsonBracket = text.lastIndexOf('}');
+    int lastJsonBracket = text.lastIndexOf('}');
     debugPrint('${text.length} $firstJsonBracket $lastJsonBracket');
     if (firstJsonBracket != -1 && lastJsonBracket != -1) {
       text = text.trim();
-      Clipboard.setData(ClipboardData(text: text));
-      String jsonString = text.substring(firstJsonBracket, lastJsonBracket + 1);
+      int addedIndex = lastJsonBracket + 1;
+      lastJsonBracket = addedIndex > text.length ? text.length : addedIndex;
+      String jsonString = text.substring(firstJsonBracket, lastJsonBracket);
       // log('--- $jsonString');
       var myParser = CustomJSONParser(jsonString);
       var parsedObject = myParser.parse();
@@ -122,28 +131,23 @@ class RecipeProvider extends ChangeNotifier {
   Future<void> getRecipes(context) async {
     // _getRecipes('', context);
     final message = jsonEncode(ingredientList.map((e) => e.toJson()).toList());
-
-    loading = true;
-    notifyListeners();
+    _setLoading(true);
     await _germiniServices.generateContent(
       message: message,
       type: QueryType.recipe,
       onSuccess: (text) {
-        loading = false;
         resultText = text;
-
-        notifyListeners();
+        _setLoading(false);
         _getRecipes(text, context);
       },
       onError: (error) {
-        loading = false;
-        notifyListeners();
+        _setLoading(false);
         _showError(error, context);
       },
     );
   }
 
-  void _getRecipes(String text, BuildContext context) {
+  Future<void> _getRecipes(String text, BuildContext context) async {
     final jsonconverted = _extractJson(text);
 
     if (jsonconverted != null) {
@@ -155,6 +159,7 @@ class RecipeProvider extends ChangeNotifier {
             .map((e) => Recipe.fromJson(e as Map<String, dynamic>))
             .toList();
         notifyListeners();
+        await _authenticationsService.saveUserRecipeData(recipeList);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const SuggestedRecipesView()));
       } else {
@@ -168,5 +173,38 @@ class RecipeProvider extends ChangeNotifier {
 
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => const RecipeDetailsView()));
+  }
+
+  Future<void> searchYoutube(BuildContext context) async {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const SuggestedVideosView()));
+    youtubeData.clear();
+    _setLoading(true);
+    final response =
+        await YoutubeApiService().getVideos('${selectedRecipe?.name}');
+    _setLoading(false);
+    if (response != null) {
+      final result = response["items"] as List;
+      debugPrint(result.first.toString());
+      youtubeData = result.map((e) => YoutubeSearchItem.fromJson(e)).toList();
+      notifyListeners();
+    }
+    // selectedRecipe = recipe;
+  }
+
+  Future<void> playVideo(YoutubeSearchItem item, BuildContext context) async {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => CustomYoutubePlayer(id: item.id)));
+    // youtubeData.clear();
+    // _setLoading(true);
+    // final response = await YoutubeApiService().getVideoDetails(item.id);
+    // _setLoading(false);
+    // if (response != null) {
+    //   final result = response["items"] as List;
+    //   debugPrint(result.first.toString());
+    //   youtubeData = result.map((e) => YoutubeSearchItem.fromJson(e)).toList();
+    //   notifyListeners();
+    // }
+    // selectedRecipe = recipe;
   }
 }

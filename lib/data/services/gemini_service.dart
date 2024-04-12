@@ -7,17 +7,15 @@ class GeminiService {
   late GenerativeModel model;
   late ChatSession chat;
   final String ingredientExtractionPrompt =
-      """Your role is to collect the ingredients and quantity information, get a valid image url for each ingredient and return it in a json format that looks like this
+      """Your role is to collect the ingredients and quantity information, and return it in a json format that looks like this
       {
         "ingredients": [
           {
             "name": "eggs",
             "quantity": 3, 
-            "imageUrl": "https://...",
           },{
             "name": "flour",
             "quantity": 0.6,
-            "imageUrl": "https://...",
           },
            ...
         ]
@@ -28,9 +26,11 @@ class GeminiService {
         2. If you cant determine the unit skip the field
         3. "quantity" should either be a double or a int
         4. return just the json, not quotations
+
+
       """;
   final String recipeExtractionPrompt =
-      """Your role is to collect the list of ingredients and quantity information and return a list of  recipes that can be made with the available ingredient keeping the quntity in mind, return your response it in a json format that looks like this
+      """Your role is to collect the list of ingredients and quantity information and return a list of recipes that can be made with the available ingredient keeping the quntity in mind, return your response it in a json format that looks like this
       {
         "recipes": [
           {
@@ -38,7 +38,6 @@ class GeminiService {
             "cooktime": "",
             "description": ""
             "instructions": "",
-            "imageUrl": "https://...",
             "tips": "",
             "ingredients": [
               {
@@ -52,7 +51,11 @@ class GeminiService {
         ]
       }
    NOTE: 
-   1. return multiline strings witj just one beginging and end quotes
+   1. If there is no "unit" value provided, take initiative and add an approprite unit for the ingredient.
+   2. If you cant determine the unit skip the field
+   3. "quantity" should either be a double or a int
+   4. return just the json, not quotations
+   5. return multiline strings with just one begining and end quotes
       """;
 
   final ValueNotifier<bool> loading = ValueNotifier(false);
@@ -81,8 +84,10 @@ class GeminiService {
     final prompt = type == QueryType.ingredients
         ? ingredientExtractionPrompt
         : recipeExtractionPrompt;
-    var response =
-        await model.generateContent([Content.text('$prompt$message')]);
+    // log('$prompt$message');
+    var response = await model.generateContent(
+        [Content.text('$prompt$message')],
+        generationConfig: GenerationConfig());
     // var response = await chat.sendMessage(Content.text('$prompt$message'));
     _onResponse(response, onSuccess: onSuccess, onError: onError);
     // } catch (e) {
