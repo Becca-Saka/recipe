@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe/providers/recipe_provider.dart';
+import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_hero.dart';
 import 'package:recipe/shared/app_icons.dart';

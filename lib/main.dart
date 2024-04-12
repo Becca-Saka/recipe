@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe/data/providers/recipe_provider.dart';
+import 'package:recipe/data/providers/user_provider.dart';
 import 'package:recipe/firebase_options.dart';
-import 'package:recipe/providers/recipe_provider.dart';
-import 'package:recipe/ui/collect_ingredient_view.dart';
+import 'package:recipe/ui/splash_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,15 +17,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => RecipeProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => RecipeProvider()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           brightness: Brightness.dark,
           fontFamily: 'SF Pro',
         ),
-        home: const CollectIngredientView(),
+        home: const SplashView(),
       ),
     );
   }

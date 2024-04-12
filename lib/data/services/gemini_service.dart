@@ -7,15 +7,17 @@ class GeminiService {
   late GenerativeModel model;
   late ChatSession chat;
   final String ingredientExtractionPrompt =
-      """Your role is to collect the ingredients and quantity information and return it in a json format that looks like this
+      """Your role is to collect the ingredients and quantity information, get a valid image url for each ingredient and return it in a json format that looks like this
       {
         "ingredients": [
           {
             "name": "eggs",
-            "quantity": 3,
+            "quantity": 3, 
+            "imageUrl": "https://...",
           },{
             "name": "flour",
             "quantity": 0.6,
+            "imageUrl": "https://...",
           },
            ...
         ]
@@ -36,6 +38,7 @@ class GeminiService {
             "cooktime": "",
             "description": ""
             "instructions": "",
+            "imageUrl": "https://...",
             "tips": "",
             "ingredients": [
               {

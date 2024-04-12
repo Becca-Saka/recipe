@@ -13,6 +13,7 @@ class AppButton extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? color;
+  final Color? textColor;
 
   const AppButton({
     super.key,
@@ -25,6 +26,7 @@ class AppButton extends StatelessWidget {
     this.height,
     this.padding,
     this.color,
+    this.textColor,
   });
 
   @override
@@ -52,7 +54,6 @@ class AppButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           padding: padding,
           backgroundColor: Colors.transparent,
-          // elevation: MaterialStateProperty.all(3),
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -73,7 +74,9 @@ class AppButton extends StatelessWidget {
                   const AppSpacing(h: 10),
                   Text(
                     title,
-                    style: AppTextStyle.semibold14,
+                    style: AppTextStyle.semibold14.copyWith(
+                      color: textColor,
+                    ),
                   ),
                 ],
               ),

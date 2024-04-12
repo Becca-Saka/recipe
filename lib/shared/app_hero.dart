@@ -16,9 +16,11 @@ class AppHero extends StatelessWidget {
       tag: tag,
       flightShuttleBuilder: (flightContext, animation, flightDirection,
           fromHeroContext, toHeroContext) {
-        return DefaultTextStyle(
-          style: DefaultTextStyle.of(toHeroContext).style,
-          child: toHeroContext.widget,
+        return Material(
+          child: DefaultTextStyle(
+            style: DefaultTextStyle.of(toHeroContext).style,
+            child: toHeroContext.widget,
+          ),
         );
       },
       child: child,

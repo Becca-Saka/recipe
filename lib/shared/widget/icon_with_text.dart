@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_icons.dart';
 import 'package:recipe/shared/app_spacing.dart';
@@ -16,21 +17,25 @@ class TextWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        AppIcon(
-          icon: icon,
-          size: 14,
-        ),
-        const AppSpacing(h: 6),
-        Text(
-          text,
-          style: AppTextStyle.medium10.copyWith(
-            fontSize: 12,
-            color: AppColors.subtitleColor,
+    return Flexible(
+      child: Row(
+        children: [
+          AppIcon(
+            icon: icon,
+            size: 14,
           ),
-        ),
-      ],
+          const AppSpacing(h: 6),
+          Flexible(
+            child: Text(
+              text,
+              style: AppTextStyle.medium10.copyWith(
+                fontSize: 12,
+                color: AppColors.subtitleColor,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

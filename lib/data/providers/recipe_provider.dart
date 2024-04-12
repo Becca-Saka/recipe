@@ -3,9 +3,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:recipe/models/ingredients.dart';
-import 'package:recipe/services/gemini_service.dart';
-import 'package:recipe/services/speech_to_text_service.dart';
+import 'package:recipe/data/models/ingredients.dart';
+import 'package:recipe/data/services/gemini_service.dart';
+import 'package:recipe/data/services/speech_to_text_service.dart';
 import 'package:recipe/shared/custom_json_parser.dart';
 import 'package:recipe/ui/confirm_ingredient_view.dart';
 import 'package:recipe/ui/recipe_details_view.dart';

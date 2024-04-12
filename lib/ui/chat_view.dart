@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe/services/gemini_service.dart';
-import 'package:recipe/services/speech_to_text_service.dart';
+import 'package:recipe/data/services/gemini_service.dart';
+import 'package:recipe/data/services/speech_to_text_service.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/widget/gradient_text.dart';
 
