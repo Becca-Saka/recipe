@@ -10,7 +10,21 @@ class GeminiService {
   late GenerativeModel imageModel;
   late ChatSession chat;
   final String prompt =
-      "Your role is to collect the ingredients and quantity information ad return it in a json format";
+      """Your role is to collect the ingredients and quantity information and return it in a json format that looks like this
+      {
+        "ingredients": [
+          {
+            "name": "eggs",
+            "quantity": 3,
+          },
+           ...
+        ]
+      }
+
+      NOTE: 
+        1. If there is no "unit" value provided, take initiative and add an approprite unit for the ingredient.
+        2. If you cant determine the unit skip the field
+      """;
 
   final ValueNotifier<bool> loading = ValueNotifier(false);
   List<Content> get chats => chat.history.toList();

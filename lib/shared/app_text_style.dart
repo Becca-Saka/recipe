@@ -37,6 +37,12 @@ abstract class AppTextStyle {
   static TextStyle get medium10 =>
       regular10.copyWith(fontWeight: AppFontWeight.medium);
 
+  ///SF Pro medium 14
+  static TextStyle get medium14 => regular10.copyWith(
+        fontWeight: AppFontWeight.medium,
+        fontSize: 14,
+      );
+
   ///SF Pro 14
   static TextStyle get regular14 => _baseTextStyle.copyWith(fontSize: 14);
 

@@ -1,6 +1,6 @@
 class Ingredient {
   final String name;
-  final int quantity;
+  final double quantity;
   final String unit;
 
   Ingredient({
@@ -12,8 +12,8 @@ class Ingredient {
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
       name: json['name'],
-      quantity: json['quantity'],
-      unit: json['unit'] ?? '',
+      quantity: json['quantity'].toDouble(),
+      unit: json['unit'] ?? 'pcs',
     );
   }
 

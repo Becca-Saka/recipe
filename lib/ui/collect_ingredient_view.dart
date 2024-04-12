@@ -50,21 +50,6 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
                       }
                     },
                   ),
-                  if (controller.ingredientList.isNotEmpty)
-                    Container(
-                      height: 200,
-                      color: Colors.grey[800],
-                      child: ListView.builder(
-                          itemCount: controller.ingredientList.length,
-                          itemBuilder: (context, index) {
-                            final item = controller.ingredientList[index];
-                            return ListTile(
-                              leading: const CircleAvatar(),
-                              title: Text(item.name),
-                              subtitle: Text('${item.quantity} ${item.unit}'),
-                            );
-                          }),
-                    ),
                 ],
               ),
             ),

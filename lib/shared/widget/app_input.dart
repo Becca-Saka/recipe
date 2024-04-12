@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_text_style.dart';
 
 class AppInput extends StatelessWidget {
@@ -17,11 +18,8 @@ class AppInput extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         hintText: hintText,
-        hintStyle: AppTextStyle.medium10.copyWith(
-          fontSize: 14,
-          color: const Color(
-            0xFFA9ADB2,
-          ),
+        hintStyle: AppTextStyle.medium14.copyWith(
+          color: AppColors.subtitleColor,
         ),
         fillColor: const Color(0xFF1E1F20),
         border: OutlineInputBorder(

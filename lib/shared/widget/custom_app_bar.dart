@@ -19,9 +19,12 @@ class CustomAppBar extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const AppIcon(
+            AppIcon(
               icon: AppIconData.back,
               size: 24,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
             ),
             const AppSpacing(h: 10),
             Text(
