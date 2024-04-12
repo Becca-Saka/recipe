@@ -6,6 +6,7 @@ import 'package:recipe/shared/app_icons.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
 import 'package:recipe/shared/widget/app_button.dart';
+import 'package:recipe/shared/widget/app_transparent_button.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -61,28 +62,10 @@ class SignInView extends StatelessWidget {
                 ),
               ),
               const AppSpacing(v: 22),
-              SizedBox(
-                height: 56,
-                width: double.infinity,
-                child: TextButton(
-                  style: ButtonStyle(
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                    10,
-                  )))),
-                  onPressed: () => controller.logInSilently(context),
-                  child: Center(
-                    child: controller.isLoading
-                        ? const CircularProgressIndicator()
-                        : Text(
-                            'Continue as a guest',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyle.medium14.copyWith(
-                              fontSize: 16,
-                            ),
-                          ),
-                  ),
-                ),
+              TransparentButton(
+                title: 'Continue as a guest',
+                onPressed: () => controller.logInSilently(context),
+                isLoading: controller.isLoading,
               ),
               const AppSpacing(v: 24)
             ],

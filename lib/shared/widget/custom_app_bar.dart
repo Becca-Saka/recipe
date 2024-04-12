@@ -6,13 +6,19 @@ import 'package:recipe/shared/app_text_style.dart';
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
-    this.waterMarked = true,
     required this.title,
+    this.waterMarked = true,
+    this.hasBackButton = true,
     this.waterMark,
+    this.actions,
+    this.titleTextSize,
   });
   final bool waterMarked;
+  final bool hasBackButton;
   final String title;
+  final double? titleTextSize;
   final Widget? waterMark;
+  final Widget? actions;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -21,19 +27,23 @@ class CustomAppBar extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AppIcon(
-              icon: AppIconData.back,
-              size: 24,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            if (hasBackButton)
+              AppIcon(
+                icon: AppIconData.back,
+                size: 24,
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             const AppSpacing(h: 10),
             Text(
               title,
-              style: AppTextStyle.bold16,
+              style: AppTextStyle.bold16.copyWith(
+                fontSize: titleTextSize,
+              ),
             ),
             const Spacer(),
+            if (actions != null) actions!,
             if (waterMarked)
               waterMark ??
                   Row(

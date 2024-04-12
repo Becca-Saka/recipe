@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
+import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/data/services/authentication_service.dart';
 import 'package:recipe/ui/home_view.dart';
 import 'package:recipe/ui/sign_in.dart';
@@ -9,6 +12,7 @@ class UserProvider extends ChangeNotifier {
   final AuthenticationsService _authenticationsService =
       AuthenticationsService();
   bool isLoading = false;
+  List<Recipe> sugestedRecipeList = [];
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
@@ -44,6 +48,17 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
       _goToHomeView(context);
     }
+  }
+
+  Future<void> getRecipes(BuildContext context) async {
+    setLoading(true);
+    sugestedRecipeList = await _authenticationsService.getUserRecipeData();
+    setLoading(false);
+  }
+
+  void viewRecipeDetails(Recipe recipe, BuildContext context) {
+    Provider.of<RecipeProvider>(context, listen: false)
+        .viewRecipeDetails(recipe, context);
   }
 
   void _goToHomeView(BuildContext context) {

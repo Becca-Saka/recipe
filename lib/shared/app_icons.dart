@@ -40,4 +40,7 @@ abstract class AppIconData {
   static const String timeCheck = '$_svgBase/time-check.svg';
   static const String youtube = '$_svgBase/youtube.svg';
   static const String picture = '$_svgBase/picture.svg';
+  static const String notifications = '$_svgBase/notifications.svg';
+  static const String timePast = '$_svgBase/time-past.svg';
+  static const String forward = '$_svgBase/forward.svg';
 }

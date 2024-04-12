@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe/shared/extensions/double.dart';
 import 'package:recipe/shared/extensions/string.dart';
 
@@ -44,6 +45,7 @@ class Recipe {
   final String instruction;
   final String tips;
   final List<Ingredient> ingredients;
+  final DateTime? dateSuggested;
 
   Recipe({
     required this.name,
@@ -54,12 +56,13 @@ class Recipe {
     required this.ingredients,
     required this.instruction,
     required this.imageUrl,
+    required this.dateSuggested,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
-      'cookTime': cookTime,
+      'cooktime': cookTime,
       'description': description,
       'instructions': instructions.isNotEmpty ? instructions : instruction,
       'tips': tips,
@@ -73,6 +76,7 @@ class Recipe {
       cookTime: map['cooktime'] as String,
       imageUrl: map['imageUrl'] as String?,
       description: map['description'] as String,
+      dateSuggested: (map['dateSuggested'] as Timestamp?)?.toDate(),
       instructions: map['instructions'] is List
           ? List<String>.from(map['instructions'])
           : [],

@@ -112,6 +112,7 @@ class AuthenticationsService {
           {
             'id': doc.id,
             'userId': uid,
+            'dateSuggested': Timestamp.now(),
             ...recipe.toJson(),
           },
         );

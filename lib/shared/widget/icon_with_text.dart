@@ -10,10 +10,12 @@ class TextWithIcon extends StatelessWidget {
     super.key,
     required this.text,
     required this.icon,
+    this.textStyle,
   });
 
   final String text;
   final String icon;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +30,11 @@ class TextWithIcon extends StatelessWidget {
           Flexible(
             child: Text(
               text,
-              style: AppTextStyle.medium10.copyWith(
-                fontSize: 12,
-                color: AppColors.subtitleColor,
-              ),
+              style: textStyle ??
+                  AppTextStyle.medium10.copyWith(
+                    fontSize: 12,
+                    color: AppColors.subtitleColor,
+                  ),
             ),
           ),
         ],

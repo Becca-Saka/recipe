@@ -53,7 +53,6 @@ class RecipeProvider extends ChangeNotifier {
         message: message,
         onSuccess: (text) {
           resultText = text;
-
           _setLoading(false);
           _getIngredient(text, context);
         },
@@ -74,6 +73,7 @@ class RecipeProvider extends ChangeNotifier {
             .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
             .toList();
         notifyListeners();
+        textEditingController.clear();
         Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const ConfirmIngredientView()));
       } else {
