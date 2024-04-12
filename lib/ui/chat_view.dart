@@ -83,7 +83,7 @@ class _ChatViewState extends State<ChatView> {
     bool canSendMessage =
         hasValidMessage && _speechToTextService.isNotListening && !_loading;
     if (canSendMessage) {
-      await _germiniServices.sendMessage(
+      await _germiniServices.generateContent(
         message: message,
         onSuccess: (text) {
           print(text);

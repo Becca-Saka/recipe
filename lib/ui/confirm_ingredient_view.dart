@@ -92,9 +92,7 @@ class ConfirmIngredientView extends StatelessWidget {
                   AppButton(
                     title: 'Generate recipe',
                     isLoading: controller.loading,
-                    onPressed: () {
-                      //TODO:
-                    },
+                    onPressed: () => controller.getRecipes(context),
                   ),
                   const AppSpacing(v: 16),
                 ],

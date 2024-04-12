@@ -46,7 +46,7 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
                     isLoading: controller.loading,
                     onPressed: () {
                       if (controller.textEditingController.text.isNotEmpty) {
-                        controller.sendMessage(context);
+                        controller.getIngredients(context);
                       }
                     },
                   ),
