@@ -1,0 +1,42 @@
+name: recipe
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  cloud_firestore: ^4.16.1
+  collection: ^1.18.0
+  firebase_auth: ^4.19.1
+  firebase_core: ^2.29.0
+  firebase_storage: ^11.7.1
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.10+1
+  google_generative_ai: ^0.2.3
+  google_sign_in: ^6.2.1
+  provider: ^6.1.2
+  speech_to_text: ^6.6.1
+
+dev_dependencies:
+  flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svgs/
+  fonts:
+    - family: SF Pro
+      fonts:
+        - asset: fonts/sf-pro-text-bold.ttf
+          weight: 700
+        - asset: fonts/sf-pro-text-semibold.ttf
+          weight: 600
+        - asset: fonts/sf-pro-text-medium.ttf
+          weight: 500
