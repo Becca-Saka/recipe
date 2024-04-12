@@ -39,4 +39,5 @@ abstract class AppIconData {
   static const String menuBurger = '$_svgBase/menu-burger.svg';
   static const String timeCheck = '$_svgBase/time-check.svg';
   static const String youtube = '$_svgBase/youtube.svg';
+  static const String picture = '$_svgBase/picture.svg';
 }

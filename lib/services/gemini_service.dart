@@ -34,7 +34,7 @@ class GeminiService {
           {
             "name": "",
             "cooktime": "",
-            "{"description": "It is a long established fact\\nthat a reader will be distracted by the readable content\\nof a page when looking at its layout. The point\\nof using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."}"
+            "description": ""
             "instructions": "",
             "tips": "",
             "ingredients": [
@@ -48,7 +48,8 @@ class GeminiService {
            ...
         ]
       }
-
+   NOTE: 
+   1. return multiline strings witj just one beginging and end quotes
       """;
 
   final ValueNotifier<bool> loading = ValueNotifier(false);

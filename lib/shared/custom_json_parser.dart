@@ -39,9 +39,12 @@ class CustomJSONParser {
     while (_source[_index] != '}') {
       var key = _parseString();
       _skipWhitespace();
+
       if (_source[_index++] != ':') {
-        throw const FormatException('Expected colon after key');
+        throw FormatException(
+            'Expected colon after key at $key ${_source[_index++]}');
       }
+
       _skipWhitespace();
       var value = _parseValue();
       object[key] = value;

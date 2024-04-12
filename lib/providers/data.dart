@@ -401,3 +401,193 @@ const datateo = """
           }
         ]
       }""";
+
+const datawe = """{
+      "recipes":[
+      {
+      "name":"Baked Chicken and Rice",
+      "cook_time":"45 minutes",
+      "description":"This simple and flavorful dish is perfect for a weeknight meal. The chicken is juicy and tender, and the rice is fluffy and flavorful.",
+      "instructions":"1. Preheat oven to 375 degrees F (190 degrees C).",
+      "2. In a large bowl, combine chicken, rice, olive oil, salt, and pepper.",
+      "3. Spread mixture in a 9x13 inch baking dish.",
+      "4. Bake for 45 minutes, or until chicken is cooked through and rice is tender.",
+      "tips":"For a more flavorful dish, use brown rice instead of white rice.",
+      "ingredients":[
+      {
+      "name":"chicken breasts",
+      "quantity": 5
+      },
+      {
+      "name":"rice",
+      "quantity": 1
+      },
+      {
+      "name":"olive oil",
+      "quantity": 1
+      },
+      {
+      "name":"salt",
+      "quantity": 1
+      },
+      {
+      "name":"pepper",
+      "quantity": 1
+      }
+      ]
+      },
+      {
+      "name":"Scrambled Eggs with Bell Peppers and Onions",
+      "cook_time":"15 minutes",
+      "description":"This quick and easy breakfast is packed with protein and flavor.",
+      "instructions":"1. In a large skillet, heat olive oil over medium heat.",
+      "2. Add bell peppers and onions and cook until softened.",
+      "3. Add eggs and cook until scrambled.",
+      "4. Serve with toast or tortillas.",
+      "tips":"For a more flavorful dish, add some cheese or salsa to the scrambled eggs.",
+      "ingredients":[
+      {
+      "name":"eggs",
+      "quantity": 3
+      },
+      {
+      "name":"olive oil",
+      "quantity": 1
+      },
+      {
+      "name":"bell peppers",
+      "quantity": 3
+      },
+      {
+      "name":"onions",
+      "quantity": 3
+      }
+      ]
+      },
+      {
+      "name":"Pasta with Tomato Sauce",
+      "cook_time":"30 minutes",
+      "description":"This classic Italian dish is easy to make and always a crowd-pleaser.",
+      "instructions":"1. In a large pot, bring water to a boil and cook pasta according to package directions.",
+      "2. While pasta is cooking, heat olive oil in a large skillet over medium heat.",
+      "3. Add tomatoes, garlic, and basil and simmer for 15 minutes.",
+      "4. Add cooked pasta to the sauce and stir to combine.",
+      "5. Serve with grated Parmesan cheese.",
+      "tips":"For a more flavorful sauce, use fresh tomatoes instead of canned tomatoes.",
+      "ingredients":[
+      {
+      "name":"pasta",
+      "quantity": 1
+      },
+      {
+      "name":"olive oil",
+      "quantity": 1
+      },
+      {
+      "name":"tomatoes",
+      "quantity": 2
+      },
+      {
+      "name":"garlic",
+      "quantity": 1
+      },
+      {
+      "name":"basil",
+      "quantity": 1
+      },
+      {
+      "name":"Parmesan cheese",
+      "quantity": 1
+      }
+      ]
+      },
+      {
+      "name":"Eggs with Spinach and Tomatoes",
+      "cook_time":"20 minutes",
+      "description":"This simple and healthy dish is a great way to start your day.",
+      "instructions":"1. In a large skillet, heat olive oil over medium heat.",
+      "2. Add spinach and cook until wilted.",
+      "3. Add tomatoes and eggs and cook until eggs are cooked to your desired doneness.",
+      "4. Serve with toast or tortillas.",
+      "tips":"For a more flavorful dish, add some cheese or salsa to the eggs.",
+      "ingredients":[
+      {
+      "name":"eggs",
+      "quantity": 3
+      },
+      {
+      "name":"olive oil",
+      "quantity": 1
+      },
+      {
+      "name":"spinach",
+      "quantity": 1
+      },
+      {
+      "name":"tomatoes",
+      "quantity": 2
+      }
+      ]
+      },
+      {
+      "name":"Peanut Butter and Jelly Sandwich",
+      "cook_time":"5 minutes",
+      "description":"This classic American sandwich is a quick and easy meal that's always a crowd-pleaser.",
+      "instructions":"1. Spread peanut butter on one slice of bread.",
+      "2. Spread jelly on the other slice of bread.",
+      "3. Put the two slices of bread together and enjoy!",
+      "tips":"For a more flavorful sandwich, use chunky peanut butter and grape jelly.",
+      "ingredients":[
+      {
+      "name":"peanut butter",
+      "quantity": 1
+      },
+      {
+      "name":"jelly",
+      "quantity": 1
+      },
+      {
+      "name":"bread",
+      "quantity": 2
+      }
+      ]
+      },
+      {
+      "name":"Potatoes with Cheese and Onions",
+      "cook_time":"45 minutes",
+      "description":"This simple and flavorful dish is a great side dish for any meal.",
+      "instructions":"1. Preheat oven to 375 degrees F (190 degrees C).",
+      "2. In a large bowl, combine potatoes, olive oil, salt, and pepper.",
+      "3. Spread mixture in a 9x13 inch baking dish.",
+      "4. Top with cheese and onions.",
+      "5. Bake for 45 minutes, or until potatoes are tender and cheese is melted.",
+      "tips":"For a more flavorful dish, use a variety of cheeses, such as cheddar, mozzarella, and Parmesan.",
+      "ingredients":[
+      {
+      "name":"potatoes",
+      "quantity": 12
+      },
+      {
+      "name":"olive oil",
+      "quantity": 1
+      },
+      {
+      "name":"salt",
+      "quantity": 1
+      },
+      {
+      "name":"pepper",
+      "quantity": 1
+      },
+      {
+      "name":"cheese",
+      "quantity": 1
+      },
+      {
+      "name":"onions",
+      "quantity": 3
+      }
+      ]
+      }
+      ]
+      }""";

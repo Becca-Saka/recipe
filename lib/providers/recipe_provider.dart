@@ -1,13 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:recipe/models/ingredients.dart';
-import 'package:recipe/providers/data.dart';
 import 'package:recipe/services/gemini_service.dart';
 import 'package:recipe/services/speech_to_text_service.dart';
 import 'package:recipe/shared/custom_json_parser.dart';
 import 'package:recipe/ui/confirm_ingredient_view.dart';
+import 'package:recipe/ui/recipe_details_view.dart';
 import 'package:recipe/ui/suggested_recipes_view.dart';
 
 class RecipeProvider extends ChangeNotifier {
@@ -18,6 +19,7 @@ class RecipeProvider extends ChangeNotifier {
   bool get _loading => _germiniServices.loading.value;
   List<Ingredient> ingredientList = [];
   List<Recipe> recipeList = [];
+  Recipe? selectedRecipe;
   String spokenText = '';
   String resultText = '';
   int start = 0;
@@ -73,31 +75,8 @@ class RecipeProvider extends ChangeNotifier {
   }
 
   Map? _extractJson(String text) {
-    // // Define the regex pattern to match any JSON-like structure
-    // RegExp regex = RegExp(
-    //     r'\{(?:[^{}]|(?:\{(?:[^{}]|(?:\{(?:[^{}]|(?:\{[^{}]*\}))*\}))*\}))*\}');
-    // // RegExp regex = RegExp(r'\{[^{}]+\}');
-    // Iterable<Match> matches = regex.allMatches(text);
-
-    // List<String> jsonStrings = [];
-    // for (Match match in matches) {
-    //   log(match.group(0).toString());
-
-    //   jsonStrings.add(match.group(0)!);
-    // }
-    // // debugPrint(text);
-    // Clipboard.setData(ClipboardData(text: text));
-    // print("----------------------------------------------------");
-
-    // if (jsonStrings.isNotEmpty) {
-    //   String jsonString = jsonStrings.join(',');
-    //   // jsonString = jsonString.replaceAll(RegExp(r'[\x00-\x1F\x7F-\x9F]'), '');
-    //   // log(jsonStrings.toString());
-    //   final jsonconverted = json.decode(jsonString) as Map<String, dynamic>;
-    //   return jsonconverted;
-    // }
-    // log(text);
-    text = datateo;
+    log(text);
+    // text = datawe;
     final firstJsonBracket = text.indexOf('{');
     final lastJsonBracket = text.lastIndexOf('}');
     debugPrint('${text.length} $firstJsonBracket $lastJsonBracket');
@@ -105,17 +84,10 @@ class RecipeProvider extends ChangeNotifier {
       text = text.trim();
       Clipboard.setData(ClipboardData(text: text));
       String jsonString = text.substring(firstJsonBracket, lastJsonBracket + 1);
-      // print(jsonString);
-      // jsonString = jsonString.replaceAll('\n', '\\n');
-      // jsonString = jsonString.replaceAll(r'\', r'\\');
-      // jsonString = jsonString.trim();
-      // jsonString = jsonString.replaceAll('\\n', '\\');
+      // log('--- $jsonString');
       var myParser = CustomJSONParser(jsonString);
       var parsedObject = myParser.parse();
-      log(parsedObject.toString());
-      // final jsonconverted = json.decode(jsonString) as Map<String, dynamic>;
-
-      // debugPrint(jsonconverted.runtimeType.toString());
+      // log(parsedObject.toString());
 
       return parsedObject as Map<String, dynamic>;
     } else {
@@ -148,34 +120,36 @@ class RecipeProvider extends ChangeNotifier {
   }
 
   Future<void> getRecipes(context) async {
-    _getRecipes('', context);
-    // final message = jsonEncode(ingredientList.map((e) => e.toJson()).toList());
+    // _getRecipes('', context);
+    final message = jsonEncode(ingredientList.map((e) => e.toJson()).toList());
 
-    // loading = true;
-    // notifyListeners();
-    // await _germiniServices.generateContent(
-    //   message: message,
-    //   type: QueryType.recipe,
-    //   onSuccess: (text) {
-    //     loading = false;
-    //     resultText = text;
+    loading = true;
+    notifyListeners();
+    await _germiniServices.generateContent(
+      message: message,
+      type: QueryType.recipe,
+      onSuccess: (text) {
+        loading = false;
+        resultText = text;
 
-    //     notifyListeners();
-    //     _getRecipes(text, context);
-    //   },
-    //   onError: (error) {
-    //     loading = false;
-    //     notifyListeners();
-    //     _showError(error, context);
-    //   },
-    // );
+        notifyListeners();
+        _getRecipes(text, context);
+      },
+      onError: (error) {
+        loading = false;
+        notifyListeners();
+        _showError(error, context);
+      },
+    );
   }
 
   void _getRecipes(String text, BuildContext context) {
     final jsonconverted = _extractJson(text);
-    print('json : $jsonconverted');
+
     if (jsonconverted != null) {
+      print('jsonconverted : $jsonconverted');
       final convertedList = jsonconverted['recipes'] as List<dynamic>;
+      print('convertedList : $convertedList');
       if (convertedList.isNotEmpty) {
         recipeList = convertedList
             .map((e) => Recipe.fromJson(e as Map<String, dynamic>))
@@ -187,5 +161,12 @@ class RecipeProvider extends ChangeNotifier {
         debugPrint('Empty list $text');
       }
     }
+  }
+
+  void viewRecipeDetails(Recipe recipe, BuildContext context) {
+    selectedRecipe = recipe;
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const RecipeDetailsView()));
   }
 }

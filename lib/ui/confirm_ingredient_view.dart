@@ -4,7 +4,6 @@ import 'package:recipe/providers/recipe_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
-import 'package:recipe/shared/extensions/double.dart';
 import 'package:recipe/shared/extensions/string.dart';
 import 'package:recipe/shared/widget/app_button.dart';
 import 'package:recipe/shared/widget/custom_app_bar.dart';
@@ -51,9 +50,9 @@ class ConfirmIngredientView extends StatelessWidget {
                               color: Colors.brown,
                             ),
                           ),
-                          title: Text(item.name.toTitleCase()),
+                          title: Text(item.name.toTitleCase),
                           subtitle: Text(
-                            '${item.quantity.removeDecimalZero} ${item.unit}',
+                            '${item.quantity} ${item.unit}',
                           ),
                         );
                       },

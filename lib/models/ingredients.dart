@@ -1,19 +1,23 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:recipe/shared/extensions/double.dart';
+
 class Ingredient {
   final String name;
-  final double quantity;
+  final dynamic rawQuantity;
   final String unit;
+
+  String get quantity =>
+      rawQuantity is num ? (rawQuantity as num).removeDecimalZero : rawQuantity;
 
   Ingredient({
     required this.name,
-    required this.quantity,
+    required this.rawQuantity,
     this.unit = '',
   });
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
       name: json['name'],
-      quantity: json['quantity'].toDouble(),
+      rawQuantity: json['quantity'],
       unit: json['unit'] ?? 'pcs',
     );
   }
@@ -31,7 +35,9 @@ class Recipe {
   final String name;
   final String cookTime;
   final String description;
+  final String? imageUrl;
   final List<String> instructions;
+  final String instruction;
   final String tips;
   final List<Ingredient> ingredients;
 
@@ -42,6 +48,8 @@ class Recipe {
     required this.instructions,
     required this.tips,
     required this.ingredients,
+    required this.instruction,
+    required this.imageUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -59,8 +67,13 @@ class Recipe {
     return Recipe(
       name: map['name'] as String,
       cookTime: map['cooktime'] as String,
+      imageUrl: map['imageUrl'] as String?,
       description: map['description'] as String,
-      instructions: List<String>.from(map['instructions']),
+      instructions: map['instructions'] is List
+          ? List<String>.from(map['instructions'])
+          : [],
+      instruction:
+          map['instructions'] is String ? map['instructions'] as String : '',
       tips: map['tips'] as String,
       ingredients: List<Ingredient>.from(
         (map['ingredients'] as List).map<Ingredient>(
