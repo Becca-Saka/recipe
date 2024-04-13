@@ -5,12 +5,10 @@ import 'circular_button.dart';
 import 'expanding_circle.dart';
 
 class PushToTalk extends StatelessWidget {
-  final bool loading;
   final bool isNotListening;
   final void Function()? onPressed;
   const PushToTalk({
     super.key,
-    required this.loading,
     required this.onPressed,
     required this.isNotListening,
   });
@@ -27,24 +25,20 @@ class PushToTalk extends StatelessWidget {
               AppColors.secondaryColor.withOpacity(0.2),
               AppColors.tertiaryColor.withOpacity(0.5),
             ],
-            size: 250,
+            size: 80,
           ),
         CircularButton(
-          size: 150,
-          backgroundColor: AppColors.secondaryColor,
+          size: 50,
+          backgroundColor:
+              isNotListening ? AppColors.secondaryColor : Colors.red,
           onPressed: onPressed,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
-            child: loading
-                ? const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: CircularProgressIndicator(),
-                  )
-                : Icon(
-                    isNotListening ? Icons.mic_off : Icons.mic,
-                    size: 50,
-                    color: Colors.white,
-                  ),
+            child: Icon(
+              isNotListening ? Icons.mic_off : Icons.stop,
+              size: 24,
+              color: Colors.white,
+            ),
           ),
         ),
       ],

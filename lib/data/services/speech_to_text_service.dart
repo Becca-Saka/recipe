@@ -5,22 +5,25 @@ import 'package:speech_to_text/speech_to_text.dart';
 class SpeechToTextService {
   final SpeechToText _speechToText = SpeechToText();
   bool speechEnabled = false;
+  bool initialized = false;
   String _lastWords = '';
   bool isListening = false;
   bool get isNotListening => !isListening || _speechToText.isNotListening;
 
   Future<void> initSpeech({
     required Function(SpeechRecognitionError) onError,
-  }) async =>
-      speechEnabled = await _speechToText.initialize(
-        debugLogging: true,
-        onError: (error) {
-          debugPrint('error: $error');
-          _lastWords = '';
-          isListening = false;
-          onError(error);
-        },
-      );
+  }) async {
+    speechEnabled = await _speechToText.initialize(
+      debugLogging: true,
+      onError: (error) {
+        debugPrint('error: $error');
+        _lastWords = '';
+        isListening = false;
+        onError(error);
+      },
+    );
+    initialized = true;
+  }
 
   /// Starts a speech recognition session
   Future<void> startListening({
@@ -32,8 +35,11 @@ class SpeechToTextService {
       isListening = true;
       await _speechToText.listen(
         localeId: 'en-NG',
-        pauseFor: const Duration(seconds: 2),
-        listenOptions: SpeechListenOptions(autoPunctuation: true),
+        pauseFor: const Duration(seconds: 5),
+        listenOptions: SpeechListenOptions(
+          autoPunctuation: true,
+          listenMode: ListenMode.dictation,
+        ),
         onResult: (result) {
           debugPrint('result: ${result.recognizedWords}');
 

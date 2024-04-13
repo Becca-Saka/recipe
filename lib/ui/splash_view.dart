@@ -13,8 +13,11 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void didChangeDependencies() {
-    Provider.of<UserProvider>(context, listen: false).checkAuthStatus(context);
     super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<UserProvider>(context, listen: false)
+          .checkAuthStatus(context);
+    });
   }
 
   @override

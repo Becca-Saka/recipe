@@ -5,7 +5,7 @@ abstract class AppTextStyle {
   static const TextStyle _baseTextStyle = TextStyle(
       fontFamily: 'SF Pro',
       fontWeight: AppFontWeight.regular,
-      letterSpacing: -0.8,
+      letterSpacing: -0.3,
       color: Colors.white);
 
   // ///SF Pro 12

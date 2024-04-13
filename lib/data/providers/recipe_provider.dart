@@ -22,6 +22,8 @@ class RecipeProvider extends ChangeNotifier {
   final AuthenticationsService _authenticationsService =
       AuthenticationsService();
   ScrollController controller = ScrollController();
+
+  bool get isListening => _speechToTextService.isListening;
   bool get _loading => _germiniServices.loading.value;
   List<Ingredient> ingredientList = [];
   List<Recipe> recipeList = [];
@@ -195,16 +197,24 @@ class RecipeProvider extends ChangeNotifier {
   Future<void> playVideo(YoutubeSearchItem item, BuildContext context) async {
     Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => CustomYoutubePlayer(id: item.id)));
-    // youtubeData.clear();
-    // _setLoading(true);
-    // final response = await YoutubeApiService().getVideoDetails(item.id);
-    // _setLoading(false);
-    // if (response != null) {
-    //   final result = response["items"] as List;
-    //   debugPrint(result.first.toString());
-    //   youtubeData = result.map((e) => YoutubeSearchItem.fromJson(e)).toList();
-    //   notifyListeners();
-    // }
-    // selectedRecipe = recipe;
+  }
+
+  Future<void> startListening() async {
+    if (!_speechToTextService.initialized) {
+      await _speechToTextService.initSpeech(onError: (e) {
+        log('error initial $e');
+      });
+    }
+    if (_speechToTextService.isListening) {
+      _speechToTextService.stopListening(onSpeechStopped: (text) {
+        log('Stopped: $text');
+        notifyListeners();
+      });
+    }
+    _speechToTextService.startListening(onSpeech: (text, val) {
+      log('Said: $text');
+      notifyListeners();
+      textEditingController.text = text;
+    });
   }
 }

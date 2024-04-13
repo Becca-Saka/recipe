@@ -22,7 +22,7 @@ class Ingredient {
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
       name: json['name'],
-      rawQuantity: json['quantity'],
+      rawQuantity: json['quantity'] ?? '',
       unit: json['unit'] ?? 'pcs',
     );
   }

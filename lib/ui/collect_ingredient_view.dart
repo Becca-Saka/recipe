@@ -6,6 +6,7 @@ import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/widget/app_button.dart';
 import 'package:recipe/shared/widget/app_input.dart';
 import 'package:recipe/shared/widget/custom_app_bar.dart';
+import 'package:recipe/shared/widget/push_to_talk.dart';
 
 class CollectIngredientView extends StatefulWidget {
   const CollectIngredientView({super.key});
@@ -41,14 +42,26 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
                         'Enter all the ingredients and quantity you currently have...',
                   ),
                   const AppSpacing(v: 20),
-                  AppButton(
-                    title: 'Generate recipe',
-                    isLoading: controller.loading,
-                    onPressed: () {
-                      if (controller.textEditingController.text.isNotEmpty) {
-                        controller.getIngredients(context);
-                      }
-                    },
+                  Row(
+                    children: [
+                      PushToTalk(
+                        onPressed: () => controller.startListening(),
+                        isNotListening: !controller.isListening,
+                      ),
+                      const AppSpacing(h: 8),
+                      Expanded(
+                        child: AppButton(
+                          title: 'Generate recipe',
+                          isLoading: controller.loading,
+                          onPressed: () {
+                            if (controller
+                                .textEditingController.text.isNotEmpty) {
+                              controller.getIngredients(context);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

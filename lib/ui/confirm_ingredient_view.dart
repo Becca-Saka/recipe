@@ -53,7 +53,9 @@ class ConfirmIngredientView extends StatelessWidget {
                               )),
                           title: Text(item.name.toTitleCase),
                           subtitle: Text(
-                            '${item.quantity} ${item.unit}',
+                            item.quantity +
+                                (item.quantity.isNotEmpty ? " " : '') +
+                                item.unit,
                           ),
                         );
                       },
