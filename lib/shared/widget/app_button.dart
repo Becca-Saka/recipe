@@ -4,8 +4,8 @@ import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
 
 class AppButton extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String title;
+  final VoidCallback? onPressed;
+  final String? title;
   final bool isLoading;
   final Widget? suffix;
   final bool expanded;
@@ -18,7 +18,7 @@ class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
     required this.onPressed,
-    required this.title,
+    this.title,
     this.isLoading = false,
     this.expanded = true,
     this.suffix,
@@ -71,13 +71,14 @@ class AppButton extends StatelessWidget {
                         icon: AppIconData.redoSpark,
                         size: 18,
                       ),
-                  const AppSpacing(h: 10),
-                  Text(
-                    title,
-                    style: AppTextStyle.semibold14.copyWith(
-                      color: textColor,
+                  if (title != null) const AppSpacing(h: 10),
+                  if (title != null)
+                    Text(
+                      title!,
+                      style: AppTextStyle.semibold14.copyWith(
+                        color: textColor,
+                      ),
                     ),
-                  ),
                 ],
               ),
       ),

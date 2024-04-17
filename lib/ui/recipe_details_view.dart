@@ -26,207 +26,208 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
         backgroundColor: AppColors.primaryColor,
         body: Builder(builder: (context) {
           final recipe = controller.selectedRecipe!;
-          return CustomScrollView(slivers: [
-            SliverAppBar(
-              expandedHeight: 300,
-              floating: false,
-              pinned: true,
-              snap: false,
-              collapsedHeight: 300,
-              backgroundColor: Colors.white,
-              leadingWidth: 0,
-              automaticallyImplyLeading: false,
-              toolbarHeight: kToolbarHeight,
-              flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                // final top = constraints.biggest.height;
-                const collapsed = false;
-                // final collapsed =
-                //     top == MediaQuery.of(context).padding.top + kToolbarHeight;
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  expandedHeight: 300,
+                  floating: false,
+                  pinned: true,
+                  snap: false,
+                  // collapsedHeight: 300,
+                  backgroundColor: Colors.white,
+                  leadingWidth: 0,
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: kToolbarHeight,
+                  flexibleSpace: LayoutBuilder(builder:
+                      (BuildContext context, BoxConstraints constraints) {
+                    final top = constraints.biggest.height;
+                    // const collapsed = false;
+                    final collapsed = top ==
+                        MediaQuery.of(context).padding.top + kToolbarHeight;
 
-                return Stack(
-                  children: [
-                    FlexibleSpaceBar(
-                      // title:
-                      // collapsed
-                      //     ? Row(
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           const BackButton(
-                      //             hasBackground: !collapsed,
-                      //           ),
-                      //           const Spacer(),
-                      //           Text(
-                      //             recipe.name,
-                      //             style: AppTextStyle.bold16.copyWith(
-                      //               color: Colors.black,
-                      //             ),
-                      //           ),
-                      //           const Spacer(),
-                      //         ],
-                      //       )
-                      //     : null,
-                      background: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: AppHero(
-                              tag: recipe.name,
-                              child: const AppImage(
-                                imageUrl: '',
-                                width: 142,
-                                height: 212,
-                                radius: 0,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 16,
-                              ),
-                              child: SizedBox(
-                                height: 35,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
+                    return Stack(
+                      children: [
+                        FlexibleSpaceBar(
+                          title: collapsed
+                              ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    AppSpacing.h24(),
-                                    AppButton(
-                                      height: 30,
-                                      expanded: false,
-                                      title: 'Watch Videos',
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 6,
-                                        horizontal: 12,
-                                      ),
-                                      suffix: const AppIcon(
-                                        icon: AppIconData.film,
-                                      ),
-                                      onPressed: () =>
-                                          controller.searchYoutube(context),
+                                    BackButton(
+                                      hasBackground: !collapsed,
                                     ),
-                                    const AppSpacing(h: 6),
-                                    AppButton(
-                                      height: 30,
-                                      expanded: false,
-                                      title: 'Save',
-                                      color: Colors.white.withOpacity(0.35),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 6,
-                                        horizontal: 12,
+                                    const Spacer(),
+                                    Text(
+                                      recipe.name,
+                                      style: AppTextStyle.bold16.copyWith(
+                                        color: Colors.black,
                                       ),
-                                      suffix: const AppIcon(
-                                        icon: AppIconData.bookmark,
-                                      ),
-                                      onPressed: () {},
                                     ),
-                                    const AppSpacing(h: 6),
-                                    AppButton(
-                                      height: 30,
-                                      expanded: false,
-                                      title: 'Edit ingredients',
-                                      color: Colors.white.withOpacity(0.35),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 6,
-                                        horizontal: 12,
-                                      ),
-                                      suffix: const AppIcon(
-                                        icon: AppIconData.edit,
-                                      ),
-                                      onPressed: () {},
-                                    ),
+                                    const Spacer(),
                                   ],
+                                )
+                              : null,
+                          background: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: AppHero(
+                                  tag: recipe.name,
+                                  child: const AppImage(
+                                    imageUrl: '',
+                                    width: 142,
+                                    height: 212,
+                                    radius: 0,
+                                  ),
                                 ),
                               ),
-                            ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  child: SizedBox(
+                                    height: 35,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      children: [
+                                        AppSpacing.h24(),
+                                        AppButton(
+                                          height: 30,
+                                          expanded: false,
+                                          title: 'Watch Videos',
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                            horizontal: 12,
+                                          ),
+                                          suffix: const AppIcon(
+                                            icon: AppIconData.film,
+                                          ),
+                                          onPressed: () =>
+                                              controller.searchYoutube(context),
+                                        ),
+                                        const AppSpacing(h: 6),
+                                        AppButton(
+                                          height: 30,
+                                          expanded: false,
+                                          title: 'Save',
+                                          color: Colors.white.withOpacity(0.35),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                            horizontal: 12,
+                                          ),
+                                          suffix: const AppIcon(
+                                            icon: AppIconData.bookmark,
+                                          ),
+                                          onPressed: () {},
+                                        ),
+                                        const AppSpacing(h: 6),
+                                        AppButton(
+                                          height: 30,
+                                          expanded: false,
+                                          title: 'Edit ingredients',
+                                          color: Colors.white.withOpacity(0.35),
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 6,
+                                            horizontal: 12,
+                                          ),
+                                          suffix: const AppIcon(
+                                            icon: AppIconData.edit,
+                                          ),
+                                          onPressed: () {},
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SafeArea(
+                                child: BackButton(
+                                  hasBackground: !collapsed,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SafeArea(
-                            child: BackButton(
-                              hasBackground: !collapsed,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+              ];
+            },
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppSpacing.v16(),
+                    Text(
+                      recipe.name,
+                      style: AppTextStyle.bold16,
                     ),
+                    AppSpacing.v16(),
+                    Row(
+                      children: [
+                        TextWithIcon(
+                          text: recipe.cookTime.toTitleCase,
+                          icon: AppIconData.timeCheck,
+                        ),
+                        const AppSpacing(h: 18),
+                        TextWithIcon(
+                          text: '${recipe.ingredients.length} ingredients',
+                          icon: AppIconData.menuBurger,
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 36),
+                    Text(
+                      recipe.description.spaced,
+                      style: AppTextStyle.medium14,
+                    ),
+                    const Divider(height: 36),
+                    Text(
+                      'Ingredients',
+                      style: AppTextStyle.bold16,
+                    ),
+                    const AppSpacing(v: 14),
+                    Text(
+                      recipe.ingredients
+                          .map((e) => e.name.toCapitalized)
+                          .join('\n'),
+                      style: AppTextStyle.medium14,
+                    ),
+                    const Divider(height: 36),
+                    Text(
+                      'Instructions',
+                      style: AppTextStyle.bold16,
+                    ),
+                    const AppSpacing(v: 14),
+                    Text(
+                      (recipe.instruction.isNotEmpty
+                          ? recipe.instruction.spaced.trim()
+                          : recipe.instructions
+                              .map((e) => e.spaced.trim().toCapitalized)
+                              .join('\n')),
+                      style: AppTextStyle.medium14,
+                    ),
+                    const Divider(height: 36),
+                    Text(
+                      'Tips',
+                      style: AppTextStyle.bold16,
+                    ),
+                    const AppSpacing(v: 14),
+                    Text(
+                      recipe.tips.spaced,
+                      style: AppTextStyle.medium14,
+                    ),
+                    AppSpacing.v24(),
                   ],
-                );
-              }),
-            ),
-            SliverFillRemaining(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AppSpacing.v16(),
-                      Text(
-                        recipe.name,
-                        style: AppTextStyle.bold16,
-                      ),
-                      AppSpacing.v16(),
-                      Row(
-                        children: [
-                          TextWithIcon(
-                            text: recipe.cookTime.toTitleCase,
-                            icon: AppIconData.timeCheck,
-                          ),
-                          const AppSpacing(h: 18),
-                          TextWithIcon(
-                            text: '${recipe.ingredients.length} ingredients',
-                            icon: AppIconData.menuBurger,
-                          ),
-                        ],
-                      ),
-                      const Divider(height: 36),
-                      Text(
-                        recipe.description.spaced,
-                        style: AppTextStyle.medium14,
-                      ),
-                      const Divider(height: 36),
-                      Text(
-                        'Ingredients',
-                        style: AppTextStyle.bold16,
-                      ),
-                      const AppSpacing(v: 14),
-                      Text(
-                        recipe.ingredients
-                            .map((e) => e.name.toCapitalized)
-                            .join('\n'),
-                        style: AppTextStyle.medium14,
-                      ),
-                      const Divider(height: 36),
-                      Text(
-                        'Instructions',
-                        style: AppTextStyle.bold16,
-                      ),
-                      const AppSpacing(v: 14),
-                      Text(
-                        (recipe.instruction.isNotEmpty
-                            ? recipe.instruction.spaced.trim()
-                            : recipe.instructions
-                                .map((e) => e.spaced.trim().toCapitalized)
-                                .join('\n')),
-                        style: AppTextStyle.medium14,
-                      ),
-                      const Divider(height: 36),
-                      Text(
-                        'Tips',
-                        style: AppTextStyle.bold16,
-                      ),
-                      const AppSpacing(v: 14),
-                      Text(
-                        recipe.tips,
-                        style: AppTextStyle.medium14,
-                      ),
-                      AppSpacing.v24(),
-                    ],
-                  ),
                 ),
               ),
             ),
-          ]);
+          );
         }),
       );
     });

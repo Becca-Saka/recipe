@@ -93,8 +93,7 @@ class _ExpandingCircleState extends State<ExpandingCircle>
             width: widget.size,
             height: widget.size,
             decoration: BoxDecoration(
-                // color: widget.color,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(10),
                 gradient: RadialGradient(
                   colors: widget.colors,
                 )),

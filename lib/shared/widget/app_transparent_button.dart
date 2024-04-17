@@ -8,6 +8,8 @@ class TransparentButton extends StatelessWidget {
   final String title;
   final Widget? prefix;
   final Widget? suffix;
+  final double? width;
+  final Color? color;
   const TransparentButton({
     super.key,
     required this.onPressed,
@@ -15,19 +17,24 @@ class TransparentButton extends StatelessWidget {
     this.isLoading = false,
     this.prefix,
     this.suffix,
+    this.width,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 56,
-      width: double.infinity,
+      width: width ?? double.infinity,
       child: TextButton(
         style: ButtonStyle(
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
-          10,
-        )))),
+              10,
+            )),
+          ),
+        ),
         onPressed: onPressed,
         child: Center(
           child: isLoading
@@ -42,6 +49,7 @@ class TransparentButton extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: AppTextStyle.medium14.copyWith(
                         fontSize: 16,
+                        color: color,
                       ),
                     ),
                     if (suffix != null) const Spacer(),

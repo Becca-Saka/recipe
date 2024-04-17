@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
-import 'package:recipe/data/providers/recipe_provider.dart';
-import 'package:recipe/data/services/authentication_service.dart';
+import 'package:recipe/data/providers/dashboard_provider.dart';
+import 'package:recipe/data/services/firebase_service.dart';
 import 'package:recipe/ui/dashboard_view.dart';
 import 'package:recipe/ui/sign_in.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel? currentUser;
-  final AuthenticationsService _authenticationsService =
-      AuthenticationsService();
+  final FirebaseService _firebaseService = FirebaseService();
   bool isLoading = false;
   bool isGoogleLoading = false;
   List<Recipe> sugestedRecipeList = [];
@@ -20,6 +19,7 @@ class UserProvider extends ChangeNotifier {
   List<Recipe> searchedRecipeList = [];
 
   TextEditingController searchController = TextEditingController();
+
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
@@ -27,9 +27,9 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> checkAuthStatus(BuildContext context) async {
     try {
-      final user = _authenticationsService.currentUser;
+      final user = _firebaseService.currentUser;
       if (user != null) {
-        currentUser = await _authenticationsService.getCurrentUserData();
+        currentUser = await _firebaseService.getCurrentUserData();
         _goToHomeView(context);
       } else {
         _goToSignInView(context);
@@ -43,7 +43,7 @@ class UserProvider extends ChangeNotifier {
     try {
       isGoogleLoading = true;
       notifyListeners();
-      await _authenticationsService.logInWithGoogleUser();
+      await _firebaseService.logInWithGoogleUser();
 
       isGoogleLoading = false;
       notifyListeners();
@@ -55,51 +55,20 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> logInSilently(BuildContext context) async {
     setLoading(true);
-    final response = await _authenticationsService.logInSilently();
+    final response = await _firebaseService.logInSilently();
     setLoading(false);
     if (response) {
-      currentUser = await _authenticationsService.getCurrentUserData();
+      currentUser = await _firebaseService.getCurrentUserData();
 
       notifyListeners();
       _goToHomeView(context);
     }
   }
 
-  Future<void> getUserRecipes(BuildContext context) async {
-    setLoading(true);
-    sugestedRecipeList = await _authenticationsService.getUserRecipeData();
-    setLoading(false);
-  }
-
-  Future<void> getAllRecipes(BuildContext context) async {
-    setLoading(true);
-    allRecipeList = await _authenticationsService.getAllRecipeData();
-    setLoading(false);
-    searchController.addListener(() => searchRecipes(searchController.text));
-  }
-
-  Future<void> searchRecipes(String searchText) async {
-    if (searchText.isEmpty) {
-      searchedRecipeList = allRecipeList;
-      return;
-    }
-    searchedRecipeList = allRecipeList
-        .where(
-          (element) =>
-              element.name.toLowerCase().contains(searchText.toLowerCase()) ||
-              element.ingredients.any(
-                (ingredient) => ingredient.name
-                    .toLowerCase()
-                    .contains(searchText.toLowerCase()),
-              ),
-        )
-        .toList();
+  void updatePromotions(bool value) {
+    currentUser!.promotions = value;
     notifyListeners();
-  }
-
-  void viewRecipeDetails(Recipe recipe, BuildContext context) {
-    Provider.of<RecipeProvider>(context, listen: false)
-        .viewRecipeDetails(recipe, context);
+    // _authenticationsService.updateUser(currentUser!);
   }
 
   void _goToHomeView(BuildContext context) {
@@ -110,5 +79,19 @@ class UserProvider extends ChangeNotifier {
   void _goToSignInView(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => const SignInView()));
+  }
+
+  Future<void> connectGoogle() async {
+    // final user = await _authenticationsService.linkCurrentUserWithGoogle();
+    // notifyListeners();
+  }
+
+  void logOut(BuildContext context) {
+    _firebaseService.signOut();
+    Provider.of<DashboardProvider>(context, listen: false).onItemTapped(2);
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const SignInView()),
+      (route) => false,
+    );
   }
 }

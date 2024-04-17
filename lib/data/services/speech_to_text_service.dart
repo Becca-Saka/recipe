@@ -7,8 +7,9 @@ class SpeechToTextService {
   bool speechEnabled = false;
   bool initialized = false;
   String _lastWords = '';
-  bool isListening = false;
-  bool get isNotListening => !isListening || _speechToText.isNotListening;
+  final ValueNotifier<bool> isListening = ValueNotifier(false);
+  // bool isListening = false;
+  bool get isNotListening => !isListening.value || _speechToText.isNotListening;
 
   Future<void> initSpeech({
     required Function(SpeechRecognitionError) onError,
@@ -18,7 +19,7 @@ class SpeechToTextService {
       onError: (error) {
         debugPrint('error: $error');
         _lastWords = '';
-        isListening = false;
+        isListening.value = false;
         onError(error);
       },
     );
@@ -32,7 +33,7 @@ class SpeechToTextService {
     try {
       await _speechToText.stop();
       _lastWords = '';
-      isListening = true;
+      isListening.value = true;
       await _speechToText.listen(
         localeId: 'en-NG',
         pauseFor: const Duration(seconds: 5),
@@ -46,7 +47,7 @@ class SpeechToTextService {
           _lastWords = result.recognizedWords;
 
           if (result.finalResult) {
-            isListening = false;
+            isListening.value = false;
           }
           onSpeech(_lastWords, result.finalResult);
         },

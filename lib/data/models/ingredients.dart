@@ -22,7 +22,7 @@ class Ingredient {
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
       name: json['name'],
-      rawQuantity: json['quantity'] ?? '',
+      rawQuantity: json['quantity'] ?? '1',
       unit: json['unit'] ?? 'pcs',
     );
   }
@@ -47,6 +47,7 @@ class Recipe {
   final List<Ingredient> ingredients;
   final DateTime? dateSuggested;
   final String? creatorId;
+  final String? creatorName;
   final String? creatorImageUrl;
 
   Recipe({
@@ -61,6 +62,7 @@ class Recipe {
     required this.dateSuggested,
     required this.creatorId,
     required this.creatorImageUrl,
+    required this.creatorName,
   });
 
   Map<String, dynamic> toJson() {
@@ -72,6 +74,7 @@ class Recipe {
       'tips': tips,
       'ingredients': ingredients.map((x) => x.toJson()).toList(),
       'imageUrl': imageUrl,
+      'creatorName': creatorName,
     };
   }
 
@@ -95,6 +98,7 @@ class Recipe {
       ),
       creatorId: map['creatorId'] as String?,
       creatorImageUrl: map['creatorImageUrl'] as String?,
+      creatorName: map['creatorName'] as String?,
     );
   }
 }

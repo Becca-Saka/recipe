@@ -8,7 +8,10 @@ extension StringExtension on String {
       .map((str) => str.toCapitalized)
       .join(' ');
   // String get spaced => this;
-  String get spaced => replaceAll(r'\n ', '\n').replaceAll('  ', '');
+  String get spaced => replaceAll('\\n ', '\n')
+      .replaceAll(r'\n ', '\n')
+      .replaceAll(r'\n', '\n')
+      .replaceAll('  ', '');
   String get singlarize =>
       endsWith('s') ? replaceRange(lastIndexOf('s'), null, ' ') : this;
 
@@ -21,12 +24,11 @@ extension StringExtension on String {
     final date = DateTime.tryParse(this);
     if (date != null) {
       final diffInHours = DateTime.now().difference(date).inHours;
-      final diffInMinutes = diffInHours ~/ 60;
+      final diffInMinutes = (diffInHours * 60 * 60) ~/ 60;
       final diffInDays = diffInHours ~/ 24;
       final diffInWeeks = diffInDays ~/ 7;
       final diffInMonths = diffInWeeks ~/ 4;
-
-      if (diffInMinutes == 1) {
+      if (diffInMinutes <= 1) {
         return '1 minute ago';
       } else if (diffInMinutes < 60 && diffInHours < 1) {
         return '$diffInMinutes minutes ago';

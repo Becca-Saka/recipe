@@ -6,7 +6,7 @@ import 'package:recipe/data/exceptions/auth_exception.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
 
-class AuthenticationsService {
+class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -37,7 +37,6 @@ class AuthenticationsService {
 
   Future<UserModel> getCurrentUserData() async {
     try {
-      print(_auth.currentUser!.uid);
       final response = await _firestore
           .collection('users')
           .doc(_auth.currentUser!.uid)
@@ -66,6 +65,32 @@ class AuthenticationsService {
             accessToken: googleAuthAccessToken, idToken: auth.idToken);
         final userCredienditial =
             await FirebaseAuth.instance.signInWithCredential(authCredential);
+        await saveUserDetails(userCredienditial);
+        return true;
+      }
+      throw AuthException('Error signing in with Google');
+    } on FirebaseAuthException catch (e) {
+      final message = AuthExceptionHandler.handleFirebaseAuthException(e);
+      debugPrint('$message');
+      throw AuthException(message);
+    } on Exception catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
+  }
+
+  Future<bool> linkCurrentUserWithGoogle() async {
+    try {
+      await signOut();
+      final googleAccount = await _googleSignIn.signIn();
+      if (googleAccount != null) {
+        final auth = await googleAccount.authentication;
+        final googleAuthAccessToken = auth.accessToken;
+        final authCredential = GoogleAuthProvider.credential(
+            accessToken: googleAuthAccessToken, idToken: auth.idToken);
+        final userCredienditial =
+            await _auth.currentUser!.linkWithCredential(authCredential);
+
         await saveUserDetails(userCredienditial);
         return true;
       }

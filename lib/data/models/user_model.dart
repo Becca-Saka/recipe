@@ -2,10 +2,13 @@ class UserModel {
   String uid;
   String? email;
   String? name;
+
+  bool promotions;
   UserModel({
     required this.uid,
     required this.email,
     required this.name,
+    this.promotions = false,
   });
 
   Map<String, dynamic> toMap() {

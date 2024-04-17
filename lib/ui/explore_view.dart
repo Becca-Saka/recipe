@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/providers/dashboard_provider.dart';
-import 'package:recipe/data/providers/user_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_icons.dart';
 import 'package:recipe/shared/app_image.dart';
@@ -23,134 +22,138 @@ class ExploreView extends StatefulWidget {
 class _ExploreViewState extends State<ExploreView> {
   @override
   void initState() {
-    Provider.of<UserProvider>(context, listen: false).getAllRecipes(context);
+    Provider.of<DashboardProvider>(context, listen: false)
+        .getAllRecipes(context);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(builder: (context, controller, child) {
-      return Scaffold(
-        backgroundColor: AppColors.primaryColor,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              children: [
-                CustomAppBar(
-                  title: 'Explore',
-                  titleTextSize: 24,
-                  hasBackButton: false,
-                  waterMarked: false,
-                  actions: InkWell(
-                    onTap: () {
-                      Provider.of<DashboardProvider>(context, listen: false)
-                          .onItemTapped(2);
-                    },
-                    child: const GradientContainer(
-                      height: 35,
-                      width: 35,
-                      radius: 10,
-                      child: Center(
-                        child: AppIcon(
-                          icon: AppIconData.home,
-                          size: 18,
+    return Consumer<DashboardProvider>(
+      builder: (context, controller, child) {
+        return Scaffold(
+          backgroundColor: AppColors.primaryColor,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                children: [
+                  CustomAppBar(
+                    title: 'Explore',
+                    titleTextSize: 24,
+                    hasBackButton: false,
+                    waterMarked: false,
+                    actions: InkWell(
+                      onTap: () {
+                        Provider.of<DashboardProvider>(context, listen: false)
+                            .onItemTapped(2);
+                      },
+                      child: const GradientContainer(
+                        height: 35,
+                        width: 35,
+                        radius: 10,
+                        child: Center(
+                          child: AppIcon(
+                            icon: AppIconData.home,
+                            size: 18,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const AppSpacing(v: 24),
-                Expanded(
-                  child: ListView(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 34,
-                        child: AppInput(
-                          controller: controller.searchController,
-                          hintText: 'Search',
-                          borderRadius: 8,
-                          contentPadding: EdgeInsets.zero,
-                          prefixIcon: const Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 8,
-                            ),
-                            child: AppIcon(
-                              icon: AppIconData.search,
-                              size: 18,
+                  const AppSpacing(v: 24),
+                  Expanded(
+                    child: ListView(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 34,
+                          child: AppInput(
+                            controller: controller.searchController,
+                            hintText: 'Search',
+                            borderRadius: 8,
+                            contentPadding: EdgeInsets.zero,
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 8,
+                              ),
+                              child: AppIcon(
+                                icon: AppIconData.search,
+                                size: 18,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      if (controller.isLoading)
-                        const Expanded(
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                      else if (controller.searchedRecipeList.isNotEmpty)
-                        Expanded(
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 16,
-                              crossAxisSpacing: 16,
-                              mainAxisExtent: 136,
+                        if (controller.isLoading)
+                          const Expanded(
+                            child: Center(
+                              child: CircularProgressIndicator(),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 24),
-                            itemCount: controller.searchedRecipeList.length,
-                            itemBuilder: (context, index) {
-                              final item = controller.searchedRecipeList[index];
-                              return RecipeListCard(
-                                item: item,
-                                onTap: (item) {
-                                  controller.viewRecipeDetails(item, context);
-                                },
-                              );
-                            },
-                          ),
-                        )
-                      else
-                        Expanded(
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 16,
-                              crossAxisSpacing: 16,
-                              mainAxisExtent: 136,
+                          )
+                        else if (controller.searchedRecipeList.isNotEmpty)
+                          Expanded(
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 16,
+                                mainAxisExtent: 136,
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              itemCount: controller.searchedRecipeList.length,
+                              itemBuilder: (context, index) {
+                                final item =
+                                    controller.searchedRecipeList[index];
+                                return RecipeListCard(
+                                  item: item,
+                                  onTap: (item) {
+                                    controller.viewRecipeDetails(item, context);
+                                  },
+                                );
+                              },
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 24),
-                            itemCount: controller.allRecipeList.length,
-                            itemBuilder: (context, index) {
-                              final item = controller.allRecipeList[index];
-                              return RecipeListCard(
-                                item: item,
-                                onTap: (item) {
-                                  controller.viewRecipeDetails(item, context);
-                                },
-                              );
-                            },
+                          )
+                        else
+                          Expanded(
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 16,
+                                mainAxisExtent: 136,
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              itemCount: controller.allRecipeList.length,
+                              itemBuilder: (context, index) {
+                                final item = controller.allRecipeList[index];
+                                return RecipeListCard(
+                                  item: item,
+                                  onTap: (item) {
+                                    controller.viewRecipeDetails(item, context);
+                                  },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      const AppSpacing(v: 16),
-                    ],
+                        const AppSpacing(v: 16),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
@@ -229,13 +232,15 @@ class RecipeListCard extends StatelessWidget {
                       ),
                     ),
                     const AppSpacing(h: 6),
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 16.5,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                        size: 14,
+                      backgroundColor: AppColors.peachColor,
+                      child: Text(
+                        (item.creatorId?.substring(0, 1) ?? 'A'.toString())
+                            .toUpperCase(),
+                        style: AppTextStyle.bold16.copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

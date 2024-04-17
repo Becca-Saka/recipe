@@ -17,62 +17,64 @@ class SignInView extends StatelessWidget {
     final height = mediaQuery.size.height;
     final width = mediaQuery.size.width;
     final isSmall = height < 700 && width < 400;
-    return Consumer<UserProvider>(builder: (context, controller, child) {
-      return Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'assets/images/background.png',
+    return Consumer<UserProvider>(
+      builder: (context, controller, child) {
+        return Scaffold(
+          body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                  'assets/images/background.png',
+                ),
               ),
             ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Let’s Explore the World of Cooking',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.bold16.copyWith(
+                    fontSize: isSmall ? 36 : 40,
+                  ),
+                ),
+                AppSpacing.v16(),
+                Text(
+                  'Sign in or Sign up to get a personalized experience on Recipé',
+                  textAlign: TextAlign.center,
+                  style: AppTextStyle.medium14.copyWith(
+                    fontSize: 16,
+                  ),
+                ),
+                AppSpacing.v32(),
+                AppButton(
+                  onPressed: controller.logInWithGoogleUser,
+                  height: 56,
+                  color: Colors.white,
+                  isLoading: controller.isGoogleLoading,
+                  textColor: AppColors.primaryColor,
+                  title: 'Continue with Google',
+                  suffix: const AppIcon(
+                    icon: AppIconData.google,
+                    size: 24,
+                  ),
+                ),
+                const AppSpacing(v: 22),
+                TransparentButton(
+                  title: 'Continue as a guest',
+                  onPressed: () => controller.logInSilently(context),
+                  isLoading: controller.isLoading,
+                ),
+                const AppSpacing(v: 24)
+              ],
+            ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'Let’s Explore the World of Cooking',
-                textAlign: TextAlign.center,
-                style: AppTextStyle.bold16.copyWith(
-                  fontSize: isSmall ? 36 : 40,
-                ),
-              ),
-              AppSpacing.v16(),
-              Text(
-                'Sign in or Sign up to get a personalized experience on Recipé',
-                textAlign: TextAlign.center,
-                style: AppTextStyle.medium14.copyWith(
-                  fontSize: 16,
-                ),
-              ),
-              AppSpacing.v32(),
-              AppButton(
-                onPressed: controller.logInWithGoogleUser,
-                height: 56,
-                color: Colors.white,
-                isLoading: controller.isGoogleLoading,
-                textColor: AppColors.primaryColor,
-                title: 'Continue with Google',
-                suffix: const AppIcon(
-                  icon: AppIconData.google,
-                  size: 24,
-                ),
-              ),
-              const AppSpacing(v: 22),
-              TransparentButton(
-                title: 'Continue as a guest',
-                onPressed: () => controller.logInSilently(context),
-                isLoading: controller.isLoading,
-              ),
-              const AppSpacing(v: 24)
-            ],
-          ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

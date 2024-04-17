@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/youtube_model.dart';
 import 'package:recipe/data/services/api_service.dart';
-import 'package:recipe/data/services/authentication_service.dart';
+import 'package:recipe/data/services/firebase_service.dart';
 import 'package:recipe/data/services/gemini_service.dart';
 import 'package:recipe/data/services/speech_to_text_service.dart';
 import 'package:recipe/shared/custom_json_parser.dart';
 import 'package:recipe/ui/confirm_ingredient_view.dart';
 import 'package:recipe/ui/recipe_details_view.dart';
-import 'package:recipe/ui/suggested_recipes_view.dart';
 import 'package:recipe/ui/suggested_video.dart';
 import 'package:recipe/ui/youtube_player.dart';
 
@@ -19,11 +18,10 @@ class RecipeProvider extends ChangeNotifier {
   final SpeechToTextService _speechToTextService = SpeechToTextService();
   final TextEditingController textEditingController = TextEditingController();
   final GeminiService _germiniServices = GeminiService();
-  final AuthenticationsService _authenticationsService =
-      AuthenticationsService();
+  final FirebaseService _authenticationsService = FirebaseService();
   ScrollController controller = ScrollController();
 
-  bool get isListening => _speechToTextService.isListening;
+  bool get isListening => _speechToTextService.isListening.value;
   bool get _loading => _germiniServices.loading.value;
   List<Ingredient> ingredientList = [];
   List<Recipe> recipeList = [];
@@ -35,6 +33,7 @@ class RecipeProvider extends ChangeNotifier {
   int end = 0;
   bool loading = false;
   void initialize() {
+    debugPrint('object');
     _initGemini();
   }
 
@@ -75,7 +74,7 @@ class RecipeProvider extends ChangeNotifier {
             .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
             .toList();
         notifyListeners();
-        textEditingController.clear();
+        // textEditingController.clear();
         Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const ConfirmIngredientView()));
       } else {
@@ -153,21 +152,22 @@ class RecipeProvider extends ChangeNotifier {
     final jsonconverted = _extractJson(text);
 
     if (jsonconverted != null) {
-      print('jsonconverted : $jsonconverted');
+      debugPrint('jsonconverted : $jsonconverted');
       final convertedList = jsonconverted['recipes'] as List<dynamic>;
-      print('convertedList : $convertedList');
+      debugPrint('convertedList : $convertedList');
       if (convertedList.isNotEmpty) {
         recipeList = convertedList
             .map((e) => Recipe.fromJson(e as Map<String, dynamic>))
             .toList();
         notifyListeners();
-        await _authenticationsService.saveUserRecipeData(recipeList);
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const SuggestedRecipesView()));
       } else {
         debugPrint('Empty list $text');
       }
     }
+  }
+
+  Future<void> saveRecipe(Recipe recipe) async {
+    await _authenticationsService.saveUserRecipeData([recipe]);
   }
 
   void viewRecipeDetails(Recipe recipe, BuildContext context) {
@@ -203,9 +203,10 @@ class RecipeProvider extends ChangeNotifier {
     if (!_speechToTextService.initialized) {
       await _speechToTextService.initSpeech(onError: (e) {
         log('error initial $e');
+        notifyListeners();
       });
     }
-    if (_speechToTextService.isListening) {
+    if (_speechToTextService.isListening.value) {
       _speechToTextService.stopListening(onSpeechStopped: (text) {
         log('Stopped: $text');
         notifyListeners();
