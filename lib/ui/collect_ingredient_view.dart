@@ -37,6 +37,7 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
                   ),
                   const AppSpacing(v: 30),
                   AppInput(
+                    maxLines: 8,
                     controller: controller.textEditingController,
                     hintText:
                         'Enter all the ingredients and quantity you currently have...',

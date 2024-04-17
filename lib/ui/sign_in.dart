@@ -54,6 +54,7 @@ class SignInView extends StatelessWidget {
                 onPressed: controller.logInWithGoogleUser,
                 height: 56,
                 color: Colors.white,
+                isLoading: controller.isGoogleLoading,
                 textColor: AppColors.primaryColor,
                 title: 'Continue with Google',
                 suffix: const AppIcon(

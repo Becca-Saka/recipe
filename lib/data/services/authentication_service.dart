@@ -103,7 +103,7 @@ class AuthenticationsService {
   }
 
   Future<void> saveUserRecipeData(List<Recipe> recipes) async {
-    final uid = _auth.currentUser!.uid;
+    final uid = currentUser!.uid;
 
     try {
       for (var recipe in recipes) {
@@ -111,7 +111,8 @@ class AuthenticationsService {
         await doc.set(
           {
             'id': doc.id,
-            'userId': uid,
+            'creatorId': uid,
+            'creatorName': currentUser!.displayName,
             'dateSuggested': Timestamp.now(),
             ...recipe.toJson(),
           },
@@ -131,6 +132,19 @@ class AuthenticationsService {
           .collection('Recipes')
           .where('userId', isEqualTo: uid)
           .get();
+      if (result.docs.isNotEmpty) {
+        return result.docs.map((e) => Recipe.fromJson(e.data())).toList();
+      }
+    } on Exception catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
+    return [];
+  }
+
+  Future<List<Recipe>> getAllRecipeData() async {
+    try {
+      final result = await _firestore.collection('Recipes').get();
       if (result.docs.isNotEmpty) {
         return result.docs.map((e) => Recipe.fromJson(e.data())).toList();
       }

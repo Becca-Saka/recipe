@@ -20,10 +20,21 @@ extension StringExtension on String {
   String get formatDate {
     final date = DateTime.tryParse(this);
     if (date != null) {
-      final diffInDays = DateTime.now().difference(date).inDays;
+      final diffInHours = DateTime.now().difference(date).inHours;
+      final diffInMinutes = diffInHours ~/ 60;
+      final diffInDays = diffInHours ~/ 24;
       final diffInWeeks = diffInDays ~/ 7;
       final diffInMonths = diffInWeeks ~/ 4;
-      if (diffInDays <= 1) {
+
+      if (diffInMinutes == 1) {
+        return '1 minute ago';
+      } else if (diffInMinutes < 60 && diffInHours < 1) {
+        return '$diffInMinutes minutes ago';
+      } else if (diffInHours == 1) {
+        return '$diffInHours hour ago';
+      } else if (diffInHours < 24 && diffInDays < 1) {
+        return '$diffInHours hours ago';
+      } else if (diffInDays <= 1) {
         return 'Today';
       } else if (diffInDays > 1 && diffInDays <= 2) {
         return 'Yesterday';

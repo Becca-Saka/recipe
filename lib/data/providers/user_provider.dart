@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
 import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/data/services/authentication_service.dart';
-import 'package:recipe/ui/home_view.dart';
+import 'package:recipe/ui/dashboard_view.dart';
 import 'package:recipe/ui/sign_in.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -12,7 +14,12 @@ class UserProvider extends ChangeNotifier {
   final AuthenticationsService _authenticationsService =
       AuthenticationsService();
   bool isLoading = false;
+  bool isGoogleLoading = false;
   List<Recipe> sugestedRecipeList = [];
+  List<Recipe> allRecipeList = [];
+  List<Recipe> searchedRecipeList = [];
+
+  TextEditingController searchController = TextEditingController();
   void setLoading(bool value) {
     isLoading = value;
     notifyListeners();
@@ -27,15 +34,23 @@ class UserProvider extends ChangeNotifier {
       } else {
         _goToSignInView(context);
       }
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       _goToSignInView(context);
     }
   }
 
   Future<void> logInWithGoogleUser() async {
-    setLoading(true);
-    await _authenticationsService.logInWithGoogleUser();
-    setLoading(false);
+    try {
+      isGoogleLoading = true;
+      notifyListeners();
+      await _authenticationsService.logInWithGoogleUser();
+
+      isGoogleLoading = false;
+      notifyListeners();
+    } on Exception catch (_) {
+      isGoogleLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> logInSilently(BuildContext context) async {
@@ -50,10 +65,36 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getRecipes(BuildContext context) async {
+  Future<void> getUserRecipes(BuildContext context) async {
     setLoading(true);
     sugestedRecipeList = await _authenticationsService.getUserRecipeData();
     setLoading(false);
+  }
+
+  Future<void> getAllRecipes(BuildContext context) async {
+    setLoading(true);
+    allRecipeList = await _authenticationsService.getAllRecipeData();
+    setLoading(false);
+    searchController.addListener(() => searchRecipes(searchController.text));
+  }
+
+  Future<void> searchRecipes(String searchText) async {
+    if (searchText.isEmpty) {
+      searchedRecipeList = allRecipeList;
+      return;
+    }
+    searchedRecipeList = allRecipeList
+        .where(
+          (element) =>
+              element.name.toLowerCase().contains(searchText.toLowerCase()) ||
+              element.ingredients.any(
+                (ingredient) => ingredient.name
+                    .toLowerCase()
+                    .contains(searchText.toLowerCase()),
+              ),
+        )
+        .toList();
+    notifyListeners();
   }
 
   void viewRecipeDetails(Recipe recipe, BuildContext context) {
@@ -63,7 +104,7 @@ class UserProvider extends ChangeNotifier {
 
   void _goToHomeView(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const HomeView()));
+        .push(MaterialPageRoute(builder: (_) => const DashboardView()));
   }
 
   void _goToSignInView(BuildContext context) {

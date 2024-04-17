@@ -23,7 +23,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    Provider.of<UserProvider>(context, listen: false).getRecipes(context);
+    Provider.of<UserProvider>(context, listen: false).getUserRecipes(context);
     super.initState();
   }
 
@@ -36,11 +36,6 @@ class _HomeViewState extends State<HomeView> {
     return Consumer<UserProvider>(builder: (context, controller, child) {
       return Scaffold(
         backgroundColor: AppColors.primaryColor,
-        floatingActionButton: FloatingActionButton(onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const CollectIngredientView()),
-          );
-        }),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -125,8 +120,13 @@ class _HomeViewState extends State<HomeView> {
                       const AppSpacing(v: 16),
                       TransparentButton(
                         title: 'Generate a new recipe',
-                        onPressed: () => controller.logInSilently(context),
-                        isLoading: controller.isLoading,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const CollectIngredientView(),
+                            ),
+                          );
+                        },
                         suffix: const AppIcon(
                           icon: AppIconData.forward,
                           size: 24,

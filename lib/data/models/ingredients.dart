@@ -46,6 +46,8 @@ class Recipe {
   final String tips;
   final List<Ingredient> ingredients;
   final DateTime? dateSuggested;
+  final String? creatorId;
+  final String? creatorImageUrl;
 
   Recipe({
     required this.name,
@@ -57,6 +59,8 @@ class Recipe {
     required this.instruction,
     required this.imageUrl,
     required this.dateSuggested,
+    required this.creatorId,
+    required this.creatorImageUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -67,6 +71,7 @@ class Recipe {
       'instructions': instructions.isNotEmpty ? instructions : instruction,
       'tips': tips,
       'ingredients': ingredients.map((x) => x.toJson()).toList(),
+      'imageUrl': imageUrl,
     };
   }
 
@@ -88,6 +93,8 @@ class Recipe {
           (x) => Ingredient.fromJson(x as Map<String, dynamic>),
         ),
       ),
+      creatorId: map['creatorId'] as String?,
+      creatorImageUrl: map['creatorImageUrl'] as String?,
     );
   }
 }

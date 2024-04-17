@@ -7,29 +7,42 @@ class AppInput extends StatelessWidget {
     super.key,
     required this.controller,
     required this.hintText,
+    this.maxLines = 1,
+    this.prefixIcon,
+    this.contentPadding,
+    this.borderRadius = 15.0,
   });
   final TextEditingController controller;
   final String hintText;
+  final int maxLines;
+  final Widget? prefixIcon;
+  final double borderRadius;
+  final EdgeInsetsGeometry? contentPadding;
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      maxLines: 8,
+      maxLines: maxLines,
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
       decoration: InputDecoration(
         filled: true,
         hintText: hintText,
+        prefixIcon: prefixIcon,
+        contentPadding: contentPadding,
         hintStyle: AppTextStyle.medium14.copyWith(
           color: AppColors.subtitleColor,
         ),
-        fillColor: const Color(0xFF1E1F20),
+        fillColor: AppColors.darkGrey,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: const BorderSide(
             color: Colors.transparent,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: const BorderSide(
             color: Colors.transparent,
           ),

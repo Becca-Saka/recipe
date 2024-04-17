@@ -29,7 +29,7 @@ class AppIcon extends StatelessWidget {
 }
 
 abstract class AppIconData {
-  static const String _svgBase = 'assets/svgs/';
+  static const String _svgBase = 'assets/svgs';
   static const String back = '$_svgBase/back.svg';
   static const String redoSpark = '$_svgBase/redo-spark.svg';
   static const String bookmark = '$_svgBase/bookmark.svg';
@@ -43,4 +43,10 @@ abstract class AppIconData {
   static const String notifications = '$_svgBase/notifications.svg';
   static const String timePast = '$_svgBase/time-past.svg';
   static const String forward = '$_svgBase/forward.svg';
+  static const String out = '$_svgBase/out.svg';
+  static const String settings = '$_svgBase/settings.svg';
+  static const String search = '$_svgBase/search.svg';
+  static const String discovery = '$_svgBase/discovery.svg';
+  static const String voice = '$_svgBase/voice.svg';
+  static const String home = '$_svgBase/home.svg';
 }
