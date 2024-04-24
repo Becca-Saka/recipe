@@ -17,7 +17,6 @@ class UserProvider extends ChangeNotifier {
   List<Recipe> sugestedRecipeList = [];
   List<Recipe> allRecipeList = [];
   List<Recipe> searchedRecipeList = [];
-
   TextEditingController searchController = TextEditingController();
 
   void setLoading(bool value) {

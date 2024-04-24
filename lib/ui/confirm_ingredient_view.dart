@@ -66,7 +66,7 @@ class ConfirmIngredientView extends StatelessWidget {
                   InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () {
-                      //TODO: onadd
+                      Navigator.pop(context);
                     },
                     child: Row(
                       children: [

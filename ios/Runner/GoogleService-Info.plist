@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>272709421121-46koccp88s0ocgbj9db2af5p5vbtphbn.apps.googleusercontent.com</string>
+	<string>272709421121-82uckepcav8eh0b9d17125ckp0ilpu0c.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.272709421121-46koccp88s0ocgbj9db2af5p5vbtphbn</string>
+	<string>com.googleusercontent.apps.272709421121-82uckepcav8eh0b9d17125ckp0ilpu0c</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>272709421121-g4mrb1k14ndm0jiu4jsmnkaab4loia1f.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDBAZnSutSGGQEmsOrMkXDcs_887UJKpxI</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.recipe</string>
+	<string>app.recipe.ai</string>
 	<key>PROJECT_ID</key>
 	<string>project-recipe-1a94e</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:272709421121:ios:0533434e42e9e44c951ec0</string>
+	<string>1:272709421121:ios:b7d9eb5508183a30951ec0</string>
 </dict>
 </plist>

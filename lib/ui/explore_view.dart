@@ -22,8 +22,8 @@ class ExploreView extends StatefulWidget {
 class _ExploreViewState extends State<ExploreView> {
   @override
   void initState() {
-    Provider.of<DashboardProvider>(context, listen: false)
-        .getAllRecipes(context);
+    // Provider.of<DashboardProvider>(context, listen: false)
+    //     .getAllRecipes(context);
 
     super.initState();
   }
@@ -236,7 +236,7 @@ class RecipeListCard extends StatelessWidget {
                       radius: 16.5,
                       backgroundColor: AppColors.peachColor,
                       child: Text(
-                        (item.creatorId?.substring(0, 1) ?? 'A'.toString())
+                        (item.creatorName?.substring(0, 1) ?? 'G'.toString())
                             .toUpperCase(),
                         style: AppTextStyle.bold16.copyWith(
                           color: Colors.white,

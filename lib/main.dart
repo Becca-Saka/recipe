@@ -6,10 +6,13 @@ import 'package:recipe/data/providers/dashboard_provider.dart';
 import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/data/providers/user_provider.dart';
 import 'package:recipe/firebase_options.dart';
+import 'package:recipe/shared/app_snackbar.dart';
 import 'package:recipe/ui/splash_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FlutterError.onError = (FlutterErrorDetails details) {
     if (details.library == 'image resource service') {
       return;
@@ -19,7 +22,6 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MainApp());
 }
 
@@ -36,6 +38,7 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        scaffoldMessengerKey: scaffoldKey,
         theme: ThemeData(
           brightness: Brightness.dark,
           fontFamily: 'SF Pro',

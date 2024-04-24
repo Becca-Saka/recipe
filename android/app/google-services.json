@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:272709421121:android:04003b025f9eb4d7951ec0",
+        "android_client_info": {
+          "package_name": "app.recipe.ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272709421121-q03vqaa6vii2rutlbp5mo6gsb1oj6vje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFVLAMpttIrg1TkeASNJXBJs4cU3muRPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272709421121-q03vqaa6vii2rutlbp5mo6gsb1oj6vje.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "272709421121-46koccp88s0ocgbj9db2af5p5vbtphbn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.recipe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:272709421121:android:9fc32cb6fb8dd951951ec0",
         "android_client_info": {
           "package_name": "com.example.recipe"

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/providers/dashboard_provider.dart';
+import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_icons.dart';
 import 'package:recipe/shared/app_spacing.dart';
@@ -32,6 +33,9 @@ class DashboardView extends StatelessWidget {
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: InkWell(
             onTap: () {
+              Provider.of<RecipeProvider>(context, listen: false)
+                  .textEditingController
+                  .clear();
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => const CollectIngredientView(),

@@ -49,6 +49,8 @@
 	<string>Gemini Assistant need to recognize your speech to be able to pass to gemini ai</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Gemini Assistant need to user your microphone to get your speech to be able to pass to gemini ai</string>
+	<key>GIDClientID</key>
+	<string>272709421121-82uckepcav8eh0b9d17125ckp0ilpu0c.apps.googleusercontent.com</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -56,7 +58,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-			<string>com.googleusercontent.apps.272709421121-46koccp88s0ocgbj9db2af5p5vbtphbn</string>
+			<string>com.googleusercontent.apps.272709421121-82uckepcav8eh0b9d17125ckp0ilpu0c</string>
 			</array> 
 		</dict>
 	</array>

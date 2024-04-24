@@ -6,10 +6,11 @@ class Ingredient {
   final String name;
   final dynamic rawQuantity;
   final String unit;
+  // String get imageUrl => "https://loremflickr.com/320/240/${name.imagify}";
   String get imageUrl =>
       "https://img.spoonacular.com/ingredients_100x100/${name.imagify}.jpg";
   // final String imageUrl;
-
+// https://loremflickr.com/320/240/dog
   String get quantity =>
       rawQuantity is num ? (rawQuantity as num).removeDecimalZero : rawQuantity;
 
@@ -50,6 +51,9 @@ class Recipe {
   final String? creatorName;
   final String? creatorImageUrl;
 
+  // String get localImageUrl =>
+  //     "https://loremflickr.com/320/240/${name.imagify}.jpg";
+
   Recipe({
     required this.name,
     required this.cookTime,
@@ -81,7 +85,7 @@ class Recipe {
   factory Recipe.fromJson(Map<String, dynamic> map) {
     return Recipe(
       name: map['name'] as String,
-      cookTime: map['cooktime'] as String,
+      cookTime: map['cooktime']?.toString() as String,
       imageUrl: map['imageUrl'] as String?,
       description: map['description'] as String,
       dateSuggested: (map['dateSuggested'] as Timestamp?)?.toDate(),
@@ -90,7 +94,9 @@ class Recipe {
           : [],
       instruction:
           map['instructions'] is String ? map['instructions'] as String : '',
-      tips: map['tips'] as String,
+      tips: (map['tips'] is List)
+          ? (map['tips'] as List).join('\n')
+          : map['tips'] as String,
       ingredients: List<Ingredient>.from(
         (map['ingredients'] as List).map<Ingredient>(
           (x) => Ingredient.fromJson(x as Map<String, dynamic>),

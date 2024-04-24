@@ -49,4 +49,5 @@ abstract class AppIconData {
   static const String discovery = '$_svgBase/discovery.svg';
   static const String voice = '$_svgBase/voice.svg';
   static const String home = '$_svgBase/home.svg';
+  static const String user = '$_svgBase/user.svg';
 }

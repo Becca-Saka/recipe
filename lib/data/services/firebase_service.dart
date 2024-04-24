@@ -137,7 +137,7 @@ class FirebaseService {
           {
             'id': doc.id,
             'creatorId': uid,
-            'creatorName': currentUser!.displayName,
+            'creatorName': currentUser?.displayName ?? 'Guest',
             'dateSuggested': Timestamp.now(),
             ...recipe.toJson(),
           },
@@ -155,7 +155,7 @@ class FirebaseService {
     try {
       final result = await _firestore
           .collection('Recipes')
-          .where('userId', isEqualTo: uid)
+          .where('creatorId', isEqualTo: uid)
           .get();
       if (result.docs.isNotEmpty) {
         return result.docs.map((e) => Recipe.fromJson(e.data())).toList();

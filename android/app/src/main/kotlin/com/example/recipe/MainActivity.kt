@@ -1,4 +1,4 @@
-package com.example.recipe
+package app.recipe.ai
 
 import io.flutter.embedding.android.FlutterActivity
 
