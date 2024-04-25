@@ -63,7 +63,6 @@ class _HomeViewState extends State<HomeView> {
                     const AppSpacing(v: 16),
                     Expanded(
                       child: ListView(
-                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _GreetingCard(
                             width: width,
@@ -108,136 +107,105 @@ class _HomeViewState extends State<HomeView> {
                             textStyle: AppTextStyle.medium14,
                           ),
                           if (controller.isLoading)
-                            const Expanded(
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
+                            const Center(
+                              child: CircularProgressIndicator(),
                             )
                           else if (controller.sugestedRecipeList.isNotEmpty)
-                            Expanded(
-                              child: GridView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16,
-                                  crossAxisSpacing: 16,
-                                  mainAxisExtent: 136,
-                                ),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 24),
-                                itemCount: controller.sugestedRecipeList.length,
-                                itemBuilder: (context, index) {
-                                  final item =
-                                      controller.sugestedRecipeList[index];
-                                  return InkWell(
-                                    borderRadius: BorderRadius.circular(12),
-                                    onTap: () {
-                                      controller.viewRecipeDetails(
-                                          item, context);
-                                    },
-                                    child: SizedBox(
-                                      height: 136,
-                                      child: Stack(
-                                        children: [
-                                          Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: AppImage(
-                                                  height: 136,
-                                                  // width: 91,
-                                                  imageUrl: item.imageUrl ?? '',
-                                                ),
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 16,
+                                crossAxisSpacing: 16,
+                                mainAxisExtent: 136,
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              itemCount: controller.sugestedRecipeList.length,
+                              itemBuilder: (context, index) {
+                                final item =
+                                    controller.sugestedRecipeList[index];
+                                return InkWell(
+                                  borderRadius: BorderRadius.circular(12),
+                                  onTap: () {
+                                    controller.viewRecipeDetails(item, context);
+                                  },
+                                  child: SizedBox(
+                                    height: 136,
+                                    child: Stack(
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: AppImage(
+                                                height: 136,
+                                                // width: 91,
+                                                imageUrl: item.imageUrl ?? '',
                                               ),
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: Container(
-                                                  height: 206,
-                                                  color: AppColors.primaryColor
-                                                      .withOpacity(0.4),
-                                                ),
+                                            ),
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: Container(
+                                                height: 206,
+                                                color: AppColors.primaryColor
+                                                    .withOpacity(0.4),
                                               ),
-                                            ],
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 10),
-                                              child: Flexible(
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
+                                            ),
+                                          ],
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8, horizontal: 10),
+                                            child: Flexible(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    item.name.toTitleCase,
+                                                    style: AppTextStyle.bold16
+                                                        .copyWith(
+                                                      fontSize: 14,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                  if (item.dateSuggested !=
+                                                      null)
+                                                    const AppSpacing(v: 4),
+                                                  if (item.dateSuggested !=
+                                                      null)
                                                     Text(
-                                                      item.name.toTitleCase,
+                                                      item.dateSuggested!
+                                                          .toString()
+                                                          .formatDate,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      // overflow: TextOverflow.ellipsis,
                                                       style: AppTextStyle.bold16
                                                           .copyWith(
-                                                        fontSize: 14,
+                                                        fontSize: 10,
                                                       ),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
                                                     ),
-                                                    if (item.dateSuggested !=
-                                                        null)
-                                                      const AppSpacing(v: 4),
-                                                    if (item.dateSuggested !=
-                                                        null)
-                                                      Text(
-                                                        item.dateSuggested!
-                                                            .toString()
-                                                            .formatDate,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        // overflow: TextOverflow.ellipsis,
-                                                        style: AppTextStyle
-                                                            .bold16
-                                                            .copyWith(
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                  ],
-                                                ),
+                                                ],
                                               ),
                                             ),
                                           ),
-                                          // Stack(
-                                          //   children: [
-                                          //     ClipRRect(
-                                          //       borderRadius: BorderRadius.circular(12),
-                                          //       child: Container(
-                                          //         height: 206,
-                                          //         // width: 91,
-                                          //         color:
-                                          //             AppColors.primaryColor.withOpacity(
-                                          //           0.4,
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //     const AppIcon(
-                                          //       icon: AppIconData.youtube,
-                                          //       size: 28,
-                                          //       color: Colors.amber,
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
-                          const AppSpacing(v: 16),
                         ],
                       ),
                     ),

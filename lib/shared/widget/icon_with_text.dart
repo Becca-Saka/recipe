@@ -19,26 +19,22 @@ class TextWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Row(
-        children: [
-          AppIcon(
-            icon: icon,
-            size: 14,
-          ),
-          const AppSpacing(h: 6),
-          Flexible(
-            child: Text(
-              text,
-              style: textStyle ??
-                  AppTextStyle.medium10.copyWith(
-                    fontSize: 12,
-                    color: AppColors.subtitleColor,
-                  ),
-            ),
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        AppIcon(
+          icon: icon,
+          size: 14,
+        ),
+        const AppSpacing(h: 6),
+        Text(
+          text,
+          style: textStyle ??
+              AppTextStyle.medium10.copyWith(
+                fontSize: 12,
+                color: AppColors.subtitleColor,
+              ),
+        ),
+      ],
     );
   }
 }
