@@ -4,6 +4,7 @@ import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_hero.dart';
 import 'package:recipe/shared/app_icons.dart';
+import 'package:recipe/shared/app_image.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
 import 'package:recipe/shared/extensions/string.dart';
@@ -61,15 +62,24 @@ class SuggestedRecipesView extends StatelessWidget {
                               children: [
                                 AppHero(
                                   tag: item.name,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Container(
-                                      height: 95,
-                                      width: 91,
-                                      color: Colors.brown,
-                                    ),
+                                  child: AppImage(
+                                    radius: 12,
+                                    imageUrl: item.imageUrl ?? '',
+                                    height: 95,
+                                    width: 91,
                                   ),
                                 ),
+                                // AppHero(
+                                //   tag: item.name,
+                                //   child: ClipRRect(
+                                //     borderRadius: BorderRadius.circular(12),
+                                //     child: Container(
+                                //       height: 95,
+                                //       width: 91,
+                                //       color: Colors.brown,
+                                //     ),
+                                //   ),
+                                // ),
                                 Flexible(
                                   child: Padding(
                                     padding: const EdgeInsets.all(12),

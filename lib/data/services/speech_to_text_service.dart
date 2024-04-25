@@ -8,7 +8,7 @@ class SpeechToTextService {
   bool initialized = false;
   String _lastWords = '';
   final ValueNotifier<bool> isListening = ValueNotifier(false);
-  // bool isListening = false;
+
   bool get isNotListening => !isListening.value || _speechToText.isNotListening;
 
   Future<void> initSpeech({
@@ -31,18 +31,19 @@ class SpeechToTextService {
     required Function(String, bool) onSpeech,
   }) async {
     try {
-      await _speechToText.stop();
+      await stopListening(onSpeechStopped: (p0) {});
       _lastWords = '';
       isListening.value = true;
       await _speechToText.listen(
         localeId: 'en-NG',
-        pauseFor: const Duration(seconds: 5),
+        pauseFor: const Duration(seconds: 10),
         listenOptions: SpeechListenOptions(
           autoPunctuation: true,
           listenMode: ListenMode.dictation,
+          cancelOnError: true,
         ),
         onResult: (result) {
-          debugPrint('result: ${result.recognizedWords}');
+          debugPrint('results: ${result.recognizedWords}');
 
           _lastWords = result.recognizedWords;
 
@@ -63,6 +64,7 @@ class SpeechToTextService {
       {required Function(String) onSpeechStopped}) async {
     await _speechToText.stop();
 
+    isListening.value = false;
     onSpeechStopped(_lastWords);
   }
 

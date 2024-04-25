@@ -102,10 +102,14 @@ class RecipeProvider extends ChangeNotifier {
       lastJsonBracket = addedIndex > text.length ? text.length : addedIndex;
       String jsonString = text.substring(firstJsonBracket, lastJsonBracket);
       // log('--- $jsonString');
+      // var myParser = CustomJSONParser(jsonString);
+      // jsonString = jsonEncode(jsonString);
+      // var parsedObject = jsonDecode(jsonString);
       var myParser = CustomJSONParser(jsonString);
       var parsedObject = myParser.parse();
       // log(parsedObject.toString());
-
+      log(parsedObject.runtimeType.toString());
+      log(parsedObject.toString());
       return parsedObject as Map<String, dynamic>;
     } else {
       debugPrint('Malformed list $text');
@@ -249,15 +253,16 @@ class RecipeProvider extends ChangeNotifier {
       });
     }
     if (_speechToTextService.isListening.value) {
-      _speechToTextService.stopListening(onSpeechStopped: (text) {
+      await _speechToTextService.stopListening(onSpeechStopped: (text) {
         log('Stopped: $text');
         notifyListeners();
       });
+    } else {
+      _speechToTextService.startListening(onSpeech: (text, val) {
+        log('Said: $text');
+        notifyListeners();
+        textEditingController.text = text;
+      });
     }
-    _speechToTextService.startListening(onSpeech: (text, val) {
-      log('Said: $text');
-      notifyListeners();
-      textEditingController.text = text;
-    });
   }
 }

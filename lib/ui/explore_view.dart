@@ -22,8 +22,8 @@ class ExploreView extends StatefulWidget {
 class _ExploreViewState extends State<ExploreView> {
   @override
   void initState() {
-    // Provider.of<DashboardProvider>(context, listen: false)
-    //     .getAllRecipes(context);
+    Provider.of<DashboardProvider>(context, listen: false)
+        .getAllRecipes(context);
 
     super.initState();
   }

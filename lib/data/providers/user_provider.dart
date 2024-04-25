@@ -71,13 +71,15 @@ class UserProvider extends ChangeNotifier {
   }
 
   void _goToHomeView(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const DashboardView()));
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const DashboardView()),
+        (route) => false);
   }
 
   void _goToSignInView(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const SignInView()));
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const SignInView()),
+        (route) => false);
   }
 
   Future<void> connectGoogle() async {

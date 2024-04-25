@@ -19,7 +19,7 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
   @override
   void initState() {
     super.initState();
-    // Provider.of<RecipeProvider>(context, listen: false).initialize();
+    Provider.of<RecipeProvider>(context, listen: false).initialize();
   }
 
   @override

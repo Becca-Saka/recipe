@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/providers/dashboard_provider.dart';
+import 'package:recipe/data/providers/recipe_provider.dart';
 import 'package:recipe/data/providers/user_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_icons.dart';
@@ -13,6 +14,7 @@ import 'package:recipe/shared/widget/custom_app_bar.dart';
 import 'package:recipe/shared/widget/gradient_background.dart';
 import 'package:recipe/shared/widget/gradient_container.dart';
 import 'package:recipe/shared/widget/icon_with_text.dart';
+import 'package:recipe/ui/collect_ingredient_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -24,8 +26,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    // Provider.of<DashboardProvider>(context, listen: false)
-    //     .getUserRecipes(context);
+    Provider.of<DashboardProvider>(context, listen: false)
+        .getUserRecipes(context);
     super.initState();
   }
 
@@ -63,99 +65,25 @@ class _HomeViewState extends State<HomeView> {
                       child: ListView(
                         // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              GradientBackground(
-                                height: 110,
-                                clipRadius: 15,
-                                mask: false,
-                                colors: [
-                                  const GradientData(
-                                    color: Color(0xFFCF5EEE),
-                                    offset: Offset(65, -35),
-
-                                    radius: 68,
-                                    // offset: Offset(60, -height / 8),
-                                  ),
-                                  GradientData(
-                                    color: const Color(0xFF8F90F2),
-                                    offset: Offset(width / 1.3, 65),
-                                    radius: 68,
-                                  ),
-                                  const GradientData(
-                                    color: Color(0xFF72B8F4),
-                                    offset: Offset(114, 170),
-                                    radius: 88,
-                                  ),
-
-                                  // drawCircle(canvas, size, paint, offset, color);
-                                ],
-                                backgroundColor: AppColors.primaryColor,
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: SizedBox(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            'Hey ${userController.currentUser?.name ?? 'Guest'},',
-                                            style: AppTextStyle.medium14
-                                                .copyWith(
-                                                    color: const Color(
-                                                        0xFFFFBDC1)),
-                                          ),
-                                          AppSpacing.v8(),
-                                          Text(
-                                            'What’s cooking?',
-                                            style: AppTextStyle.bold16.copyWith(
-                                              fontSize: isSmall ? 18 : 24,
-                                            ),
-                                          ),
-                                          AppSpacing.v16(),
-                                          TextWithIcon(
-                                            text:
-                                                '${controller.sugestedRecipeList.length} recipe(s) generated',
-                                            icon: AppIconData.timePast,
-                                            textStyle: AppTextStyle.medium10,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                right: 0,
-                                top: -22,
-                                child: Image.asset(
-                                  'assets/images/boy-cook.png',
-                                  width: 131,
-                                  height: 128,
-                                ),
-                              ),
-                            ],
+                          _GreetingCard(
+                            width: width,
+                            isSmall: isSmall,
+                            name: userController.currentUser?.name,
+                            recipeLength: controller.sugestedRecipeList.length,
                           ),
                           const AppSpacing(v: 16),
                           TransparentButton(
                             title: 'Generate a new recipe',
                             onPressed: () {
-                              controller.searchImage();
-                              // Provider.of<RecipeProvider>(context,
-                              //         listen: false)
-                              //     .textEditingController
-                              //     .clear();
-                              // Navigator.of(context).push(
-                              //   MaterialPageRoute(
-                              //     builder: (_) => const CollectIngredientView(),
-                              //   ),
-                              // );
+                              Provider.of<RecipeProvider>(context,
+                                      listen: false)
+                                  .textEditingController
+                                  .clear();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const CollectIngredientView(),
+                                ),
+                              );
                             },
                             suffix: const AppIcon(
                               icon: AppIconData.forward,
@@ -185,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                                 child: CircularProgressIndicator(),
                               ),
                             )
-                          else
+                          else if (controller.sugestedRecipeList.isNotEmpty)
                             Expanded(
                               child: GridView.builder(
                                 shrinkWrap: true,
@@ -321,5 +249,97 @@ class _HomeViewState extends State<HomeView> {
         },
       );
     });
+  }
+}
+
+class _GreetingCard extends StatelessWidget {
+  const _GreetingCard({
+    super.key,
+    required this.width,
+    required this.isSmall,
+    required this.name,
+    required this.recipeLength,
+  });
+
+  final double width;
+  final bool isSmall;
+  final String? name;
+  final int recipeLength;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        GradientBackground(
+          height: 110,
+          clipRadius: 15,
+          mask: false,
+          colors: [
+            const GradientData(
+              color: Color(0xFFCF5EEE),
+              offset: Offset(65, -35),
+
+              radius: 68,
+              // offset: Offset(60, -height / 8),
+            ),
+            GradientData(
+              color: const Color(0xFF8F90F2),
+              offset: Offset(width / 1.3, 65),
+              radius: 68,
+            ),
+            const GradientData(
+              color: Color(0xFF72B8F4),
+              offset: Offset(114, 170),
+              radius: 88,
+            ),
+
+            // drawCircle(canvas, size, paint, offset, color);
+          ],
+          backgroundColor: AppColors.primaryColor,
+          width: MediaQuery.of(context).size.width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Hey ${name ?? 'Guest'},',
+                      style: AppTextStyle.medium14
+                          .copyWith(color: const Color(0xFFFFBDC1)),
+                    ),
+                    AppSpacing.v8(),
+                    Text(
+                      'What’s cooking?',
+                      style: AppTextStyle.bold16.copyWith(
+                        fontSize: isSmall ? 18 : 24,
+                      ),
+                    ),
+                    AppSpacing.v16(),
+                    TextWithIcon(
+                      text: '$recipeLength recipe(s) generated',
+                      icon: AppIconData.timePast,
+                      textStyle: AppTextStyle.medium10,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          right: 0,
+          top: -22,
+          child: Image.asset(
+            'assets/images/boy-cook.png',
+            width: 131,
+            height: 128,
+          ),
+        ),
+      ],
+    );
   }
 }

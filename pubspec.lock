@@ -344,6 +344,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
+  json_string:
+    dependency: "direct main"
+    description:
+      name: json_string
+      sha256: "1350ec63197d3df7e7141092085b2b2c93ff18fb8d4cc8cede3ab7ce39a5c925"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
+  json_util:
+    dependency: transitive
+    description:
+      name: json_util
+      sha256: "67d9af645042cb6e4f3acf100fe5eda769e92db8ef118bc3783e3571e4e3d22b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   leak_tracker:
     dependency: transitive
     description:

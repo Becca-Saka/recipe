@@ -20,7 +20,6 @@ class DashboardProvider extends ChangeNotifier {
   List<Recipe> searchedRecipeList = [];
   void onItemTapped(int index) {
     selectedIndex = index;
-    print(selectedIndex);
     notifyListeners();
   }
 
