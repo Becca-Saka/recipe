@@ -14,15 +14,21 @@ class FirebaseService {
 
   User? get currentUser => _auth.currentUser;
   Future<bool> saveUserDetails(UserCredential crediential) async {
-    final user = crediential.user!;
-    final email = user.email;
-    final uid = user.uid;
-    final name = user.displayName;
+    final user = crediential.additionalUserInfo?.profile;
+    final uid = crediential.user!.uid;
+    final email = user?['email'];
+    final name = user?['name'];
+    final image = user?['picture'];
+
+    await currentUser?.updateDisplayName(name);
+    await currentUser?.updatePhotoURL(image);
+    await currentUser?.reload();
     try {
       await _firestore.collection('users').doc(uid).set({
         'uid': uid,
         'email': email,
         'name': name,
+        if (image != null) 'imageUrl': image,
       });
 
       return true;
@@ -45,6 +51,25 @@ class FirebaseService {
         return UserModel.fromMap(response.data()!);
       }
       throw AuthException('User not found');
+    } on FirebaseAuthException catch (e) {
+      final message = AuthExceptionHandler.handleFirebaseAuthException(e);
+      throw AuthException(message);
+    } on Exception catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
+  }
+
+  Stream<DocumentSnapshot<UserModel>> listenToCurrentUserData() {
+    try {
+      return _firestore
+          .collection('users')
+          .withConverter(
+            fromFirestore: (snapshot, _) => UserModel.fromMap(snapshot.data()!),
+            toFirestore: (user, _) => user.toMap(),
+          )
+          .doc(_auth.currentUser!.uid)
+          .snapshots();
     } on FirebaseAuthException catch (e) {
       final message = AuthExceptionHandler.handleFirebaseAuthException(e);
       throw AuthException(message);
@@ -81,7 +106,7 @@ class FirebaseService {
 
   Future<bool> linkCurrentUserWithGoogle() async {
     try {
-      await signOut();
+      await _googleSignIn.signOut();
       final googleAccount = await _googleSignIn.signIn();
       if (googleAccount != null) {
         final auth = await googleAccount.authentication;
@@ -92,6 +117,7 @@ class FirebaseService {
             await _auth.currentUser!.linkWithCredential(authCredential);
 
         await saveUserDetails(userCredienditial);
+        await _auth.currentUser?.reload();
         return true;
       }
       throw AuthException('Error signing in with Google');
@@ -127,22 +153,41 @@ class FirebaseService {
     await _auth.signOut();
   }
 
-  Future<void> saveUserRecipeData(List<Recipe> recipes) async {
+  CreatorModel get _creatorModel => CreatorModel(
+        id: currentUser!.uid,
+        name: currentUser?.displayName ?? 'Guest',
+        imageUrl: currentUser?.photoURL,
+      );
+
+  Future<Recipe> saveUserRecipeData(Recipe recipe) async {
     final uid = currentUser!.uid;
+    // final uid = currentUser!.uid;
 
     try {
-      for (var recipe in recipes) {
-        final doc = _firestore.collection('Recipes').doc();
-        await doc.set(
-          {
-            'id': doc.id,
-            'creatorId': uid,
-            'creatorName': currentUser?.displayName ?? 'Guest',
-            'dateSuggested': Timestamp.now(),
-            ...recipe.toJson(),
-          },
-        );
+      final collection = _firestore.collection('Recipes');
+      final doc = collection.doc(recipe.id);
+      recipe.id = doc.id;
+      if (recipe.creators.isNotEmpty &&
+          recipe.creators.any((element) => element.id == uid)) {
+        recipe.creators.removeWhere((element) => element.id == uid);
+      } else {
+        recipe.creators.add(_creatorModel);
+        await _firestore.collection('users').doc(uid).update({
+          'recipes': FieldValue.arrayUnion([
+            {
+              'id': recipe.id,
+              'dateSuggested': Timestamp.now(),
+            }
+          ])
+        });
       }
+
+      await doc.set(
+        recipe.toJson(),
+        SetOptions(merge: true),
+      );
+
+      return recipe;
     } on Exception catch (e, s) {
       debugPrint('$e\n$s');
       rethrow;
@@ -150,12 +195,10 @@ class FirebaseService {
   }
 
   Future<List<Recipe>> getUserRecipeData() async {
-    final uid = _auth.currentUser!.uid;
-
     try {
       final result = await _firestore
           .collection('Recipes')
-          .where('creatorId', isEqualTo: uid)
+          .where('creators', arrayContains: _creatorModel.toJson())
           .get();
       if (result.docs.isNotEmpty) {
         return result.docs.map((e) => Recipe.fromJson(e.data())).toList();
@@ -178,5 +221,22 @@ class FirebaseService {
       rethrow;
     }
     return [];
+  }
+
+  Future<bool> updateUser(UserModel userModel) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userModel.uid)
+          .set(userModel.toMap(), SetOptions(merge: true));
+
+      return true;
+    } on FirebaseAuthException catch (e) {
+      final message = AuthExceptionHandler.handleFirebaseAuthException(e);
+      throw AuthException(message);
+    } on Exception catch (e, s) {
+      debugPrint('$e\n$s');
+      rethrow;
+    }
   }
 }

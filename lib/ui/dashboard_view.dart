@@ -31,25 +31,29 @@ class DashboardView extends StatelessWidget {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: InkWell(
-            onTap: () {
-              Provider.of<RecipeProvider>(context, listen: false)
-                  .textEditingController
-                  .clear();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const CollectIngredientView(),
-                ),
-              );
-            },
-            child: const GradientContainer(
-              height: 70,
-              width: 70,
-              shape: BoxShape.circle,
-              child: Center(
-                child: AppIcon(
-                  icon: AppIconData.redoSpark,
-                  size: 24,
+          floatingActionButton: Semantics(
+            label: 'Generate Recipe',
+            button: true,
+            child: InkWell(
+              onTap: () {
+                Provider.of<RecipeProvider>(context, listen: false)
+                    .textEditingController
+                    .clear();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const CollectIngredientView(),
+                  ),
+                );
+              },
+              child: const GradientContainer(
+                height: 70,
+                width: 70,
+                shape: BoxShape.circle,
+                child: Center(
+                  child: AppIcon(
+                    icon: AppIconData.redoSpark,
+                    size: 24,
+                  ),
                 ),
               ),
             ),
@@ -72,12 +76,14 @@ class DashboardView extends StatelessWidget {
                   children: [
                     _getAppIcons(
                       index: 0,
+                      label: 'Explore',
                       currentIndex: controller.selectedIndex,
                       icon: AppIconData.discovery,
                       onTap: (index) => controller.onItemTapped(index),
                     ),
                     _getAppIcons(
                       index: 1,
+                      label: 'Settings',
                       currentIndex: controller.selectedIndex,
                       icon: AppIconData.settings,
                       onTap: (index) => controller.onItemTapped(index),
@@ -95,33 +101,38 @@ class DashboardView extends StatelessWidget {
   Widget _getAppIcons({
     required int index,
     required int currentIndex,
+    required String label,
     required String icon,
     void Function(int)? onTap,
   }) {
     final active = index == currentIndex;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          height: 4,
-          width: 60,
-          decoration: BoxDecoration(
-            // shape: BoxShape.circle,
-            borderRadius: const BorderRadius.vertical(
-              bottom: Radius.circular(10),
+    return Semantics(
+      label: label,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 4,
+            width: 60,
+            decoration: BoxDecoration(
+              // shape: BoxShape.circle,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(10),
+              ),
+              color: active ? AppColors.peachColor : Colors.transparent,
             ),
-            color: active ? AppColors.peachColor : Colors.transparent,
           ),
-        ),
-        AppSpacing.v16(),
-        AppIcon(
-          icon: icon,
-          size: 30,
-          color: active ? AppColors.peachColor : Colors.white,
-          onTap: () => onTap?.call(index),
-        ),
-      ],
+          AppSpacing.v16(),
+          AppIcon(
+            excludeSemantics: true,
+            icon: icon,
+            size: 30,
+            color: active ? AppColors.peachColor : Colors.white,
+            onTap: () => onTap?.call(index),
+          ),
+        ],
+      ),
     );
   }
 }

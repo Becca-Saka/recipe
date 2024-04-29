@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:recipe/data/services/sample_data.dart';
+import 'package:recipe/data/tokens.dart';
 
 enum QueryType { ingredients, recipe }
 
@@ -102,11 +103,9 @@ Before you give me back a response, validate it. Your response must fullfill the
 
   int maxMessageSize = 1005299;
   void init() {
-    const apiKey = String.fromEnvironment('API_KEY');
-
     model = GenerativeModel(
       model: 'gemini-1.0-pro',
-      apiKey: apiKey,
+      apiKey: geminiAPIKey,
     );
 
     chat = model.startChat();
@@ -128,8 +127,8 @@ Before you give me back a response, validate it. Your response must fullfill the
           ? '$ingredientExtractionPrompt$message'
           : '$recipeExtractionPrompt$message$recipeExtractionPrompt2';
 
-      log('$prompt$message');
-      log("-------------------------");
+      // log('$prompt$message');
+      // log("-------------------------");
 
       var response = await model.generateContent([Content.text(prompt)]);
       _onResponse(response, onSuccess: onSuccess, onError: onError);

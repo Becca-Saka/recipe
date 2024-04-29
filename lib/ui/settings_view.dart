@@ -40,6 +40,7 @@ class SettingsView extends StatelessWidget {
                         radius: 10,
                         child: Center(
                           child: AppIcon(
+                            sematicLabel: 'Home',
                             icon: AppIconData.home,
                             size: 18,
                           ),
@@ -62,9 +63,14 @@ class SettingsView extends StatelessWidget {
                         fontSize: 12,
                       ),
                     ),
-                    trailing: Switch.adaptive(
-                      value: controller.currentUser?.promotions ?? false,
-                      onChanged: controller.updatePromotions,
+                    trailing: Semantics(
+                      label: controller.currentUser!.promotions
+                          ? 'Turn off Promotions'
+                          : 'Turn on Promotions',
+                      child: Switch.adaptive(
+                        value: controller.currentUser?.promotions ?? false,
+                        onChanged: controller.updatePromotions,
+                      ),
                     ),
                   ),
                   const Divider(height: 32),
@@ -79,33 +85,35 @@ class SettingsView extends StatelessWidget {
                       'Google',
                       style: AppTextStyle.medium14,
                     ),
-                    trailing: controller.currentUser?.email == null
-                        ? TransparentButton(
-                            title: 'Connect',
-                            onPressed: controller.connectGoogle,
-                            width: 100,
-                          )
-                        : Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                controller.currentUser?.email ?? '',
-                                style: AppTextStyle.medium10.copyWith(
-                                  color: AppColors.subtitleColor,
-                                  fontSize: 12,
-                                ),
+                    trailing: controller.isLoading
+                        ? const CircularProgressIndicator()
+                        : controller.currentUser?.email == null
+                            ? TransparentButton(
+                                title: 'Connect',
+                                onPressed: controller.connectGoogle,
+                                width: 100,
+                              )
+                            : Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    controller.currentUser?.email ?? '',
+                                    style: AppTextStyle.medium10.copyWith(
+                                      color: AppColors.subtitleColor,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Connected',
+                                    style: AppTextStyle.medium10.copyWith(
+                                      color: const Color(0xFF4CAF50),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Connected',
-                                style: AppTextStyle.medium10.copyWith(
-                                  color: const Color(0xFF4CAF50),
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
                   ),
                   const Divider(height: 32),
                   const AppSpacing(v: 24),

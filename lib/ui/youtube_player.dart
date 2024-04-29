@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
   late TextEditingController _seekToController;
 
   bool _isPlayerReady = false;
-  // final String _ids = "nPt8bK2gbaU";
 
   @override
   void initState() {
@@ -59,7 +57,6 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
 
   @override
   void deactivate() {
-    // Pauses video while navigating to next page.
     _controller.pause();
     super.deactivate();
   }

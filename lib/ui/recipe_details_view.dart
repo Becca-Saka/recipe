@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/providers/recipe_provider.dart';
+import 'package:recipe/data/providers/user_provider.dart';
 import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_hero.dart';
 import 'package:recipe/shared/app_icons.dart';
@@ -11,6 +13,7 @@ import 'package:recipe/shared/extensions/string.dart';
 import 'package:recipe/shared/widget/app_button.dart';
 import 'package:recipe/shared/widget/icon_with_text.dart';
 import 'package:recipe/ui/collect_ingredient_view.dart';
+import 'package:recipe/ui/suggested_video.dart';
 
 class RecipeDetailsView extends StatefulWidget {
   const RecipeDetailsView({super.key});
@@ -47,70 +50,64 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                     final collapsed = top ==
                         MediaQuery.of(context).padding.top + kToolbarHeight;
 
-                    return Stack(
-                      children: [
-                        FlexibleSpaceBar(
-                          title: collapsed
-                              ? SafeArea(
-                                  child: Stack(
-                                    children: [
-                                      BackButton(
-                                        hasBackground: !collapsed,
-                                      ),
-                                      SizedBox(
-                                        height: 35,
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 35),
-                                          child: _buildActions(
-                                              controller, context),
-                                        ),
-                                      ),
-                                    ],
+                    return FlexibleSpaceBar(
+                      title: collapsed
+                          ? SafeArea(
+                              child: Stack(
+                                children: [
+                                  BackButton(
+                                    hasBackground: !collapsed,
                                   ),
-                                )
-                              : null,
-                          background: Stack(
-                            children: [
-                              Positioned.fill(
-                                child: AppHero(
-                                  tag: recipe.name,
-                                  child: const AppImage(
-                                    imageUrl: '',
-                                    width: 142,
-                                    height: 212,
-                                    radius: 0,
-                                  ),
-                                ),
-                              ),
-                              Positioned.fill(
-                                child: Container(
-                                  color: Colors.black.withOpacity(0.2),
-                                  width: 142,
-                                  height: 212,
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  child: SizedBox(
+                                  SizedBox(
                                     height: 35,
-                                    child: _buildActions(controller, context),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 35),
+                                      child: _buildActions(controller, context),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                              SafeArea(
-                                child: BackButton(
-                                  hasBackground: !collapsed,
-                                ),
+                            )
+                          : null,
+                      background: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: AppHero(
+                              tag: recipe.name,
+                              child: AppImage(
+                                imageUrl: recipe.imageUrl ?? '',
+                                width: 142,
+                                height: 212,
+                                radius: 0,
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Positioned.fill(
+                            child: Container(
+                              color: Colors.black.withOpacity(0.2),
+                              width: 142,
+                              height: 212,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                              ),
+                              child: SizedBox(
+                                height: 35,
+                                child: _buildActions(controller, context),
+                              ),
+                            ),
+                          ),
+                          SafeArea(
+                            child: BackButton(
+                              hasBackground: !collapsed,
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   }),
                 ),
@@ -155,7 +152,8 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                     const AppSpacing(v: 14),
                     Text(
                       recipe.ingredients
-                          .map((e) => e.name.toCapitalized)
+                          .map((e) =>
+                              '${recipe.ingredients.indexOf(e) + 1}. ${e.name.toCapitalized} ')
                           .join('\n'),
                       style: AppTextStyle.medium14,
                     ),
@@ -169,7 +167,7 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                       (recipe.instruction.isNotEmpty
                           ? recipe.instruction.spaced.trim()
                           : recipe.instructions
-                              .map((e) => e.spaced.trim().toCapitalized)
+                              .map((e) => e.spaced.toCapitalized)
                               .join('\n')),
                       style: AppTextStyle.medium14,
                     ),
@@ -195,6 +193,11 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
   }
 
   ListView _buildActions(RecipeProvider controller, BuildContext context) {
+    Recipe? recipe = controller.selectedRecipe!;
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final user = userProvider.currentUser!;
+    String userId = user.uid;
+    bool isSaved = recipe.creators.any((element) => element.id == userId);
     return ListView(
       scrollDirection: Axis.horizontal,
       children: [
@@ -209,44 +212,55 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
           ),
           suffix: const AppIcon(
             icon: AppIconData.film,
+            excludeSemantics: true,
           ),
-          onPressed: () => controller.searchYoutube(context),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => const SuggestedVideosView(),
+              ),
+            );
+            controller.searchYoutube();
+          },
         ),
         const AppSpacing(h: 6),
         AppButton(
           height: 30,
           expanded: false,
-          title: 'Save',
+          title: isSaved ? 'Saved' : 'Save',
           color: Colors.white.withOpacity(0.35),
           padding: const EdgeInsets.symmetric(
             vertical: 6,
             horizontal: 12,
           ),
-          suffix: const AppIcon(
+          suffix: AppIcon(
             icon: AppIconData.bookmark,
+            color: isSaved ? Colors.yellow : null,
+            excludeSemantics: true,
           ),
           onPressed: () {
             controller.saveRecipe(controller.selectedRecipe!);
           },
         ),
         const AppSpacing(h: 6),
-        AppButton(
-          height: 30,
-          expanded: false,
-          title: 'Edit ingredients',
-          color: Colors.white.withOpacity(0.35),
-          padding: const EdgeInsets.symmetric(
-            vertical: 6,
-            horizontal: 12,
+        if (recipe.isLocal)
+          AppButton(
+            height: 30,
+            expanded: false,
+            title: 'Edit ingredients',
+            color: Colors.white.withOpacity(0.35),
+            padding: const EdgeInsets.symmetric(
+              vertical: 6,
+              horizontal: 12,
+            ),
+            suffix: const AppIcon(
+              icon: AppIconData.edit,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const CollectIngredientView()));
+            },
           ),
-          suffix: const AppIcon(
-            icon: AppIconData.edit,
-          ),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => const CollectIngredientView()));
-          },
-        ),
       ],
     );
   }
@@ -263,25 +277,29 @@ class BackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: SizedBox(
-          width: hasBackground ? 50 : 30,
-          height: hasBackground ? 50 : 30,
-          child: Container(
-            decoration: BoxDecoration(
-              color: hasBackground
-                  ? AppColors.primaryColor.withOpacity(0.35)
-                  : null,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: AppIcon(
-                icon: AppIconData.back,
-                size: 24,
-                color: Colors.white,
+      child: Semantics(
+        label: 'Back Button',
+        button: true,
+        child: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: SizedBox(
+            width: hasBackground ? 50 : 30,
+            height: hasBackground ? 50 : 30,
+            child: Container(
+              decoration: BoxDecoration(
+                color: hasBackground
+                    ? AppColors.primaryColor.withOpacity(0.35)
+                    : null,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: AppIcon(
+                  icon: AppIconData.back,
+                  size: 24,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

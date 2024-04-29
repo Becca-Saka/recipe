@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe/data/exceptions/auth_exception.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
 import 'package:recipe/data/providers/dashboard_provider.dart';
 import 'package:recipe/data/services/firebase_service.dart';
+import 'package:recipe/shared/app_snackbar.dart';
 import 'package:recipe/ui/dashboard_view.dart';
 import 'package:recipe/ui/sign_in.dart';
 
@@ -38,12 +40,18 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> logInWithGoogleUser() async {
+  Future<void> logInWithGoogleUser(BuildContext context) async {
     try {
       isGoogleLoading = true;
       notifyListeners();
-      await _firebaseService.logInWithGoogleUser();
+      final response = await _firebaseService.logInWithGoogleUser();
+      setLoading(false);
+      if (response) {
+        currentUser = await _firebaseService.getCurrentUserData();
 
+        notifyListeners();
+        _goToHomeView(context);
+      }
       isGoogleLoading = false;
       notifyListeners();
     } on Exception catch (_) {
@@ -67,13 +75,24 @@ class UserProvider extends ChangeNotifier {
   void updatePromotions(bool value) {
     currentUser!.promotions = value;
     notifyListeners();
-    // _authenticationsService.updateUser(currentUser!);
+    _firebaseService.updateUser(currentUser!);
   }
 
   void _goToHomeView(BuildContext context) {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => const DashboardView()),
         (route) => false);
+    _listenToUserChanges();
+  }
+
+  Future<void> _listenToUserChanges() async {
+    _firebaseService.listenToCurrentUserData().listen((event) {
+      final user = event.data();
+      if (user != null && currentUser != user) {
+        currentUser = user;
+        notifyListeners();
+      }
+    });
   }
 
   void _goToSignInView(BuildContext context) {
@@ -83,8 +102,16 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> connectGoogle() async {
-    // final user = await _authenticationsService.linkCurrentUserWithGoogle();
-    // notifyListeners();
+    try {
+      setLoading(true);
+      await _firebaseService.linkCurrentUserWithGoogle();
+      setLoading(false);
+    } on AuthException catch (e) {
+      setLoading(false);
+      AppSnackBar.showErrorCustomSnackbar(message: e.message);
+    } catch (e) {
+      setLoading(false);
+    }
   }
 
   void logOut(BuildContext context) {

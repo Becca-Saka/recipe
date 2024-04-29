@@ -10,6 +10,9 @@ class AuthExceptionHandler {
     debugPrint(e.code);
     String status;
     switch (e.code) {
+      case 'credential-already-in-use':
+        status = "An account is already linked for that email.";
+        break;
       case "ERROR_INVALID_EMAIL":
         status = "Your email address appears to be malformed.";
         break;

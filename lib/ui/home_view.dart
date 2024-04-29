@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/providers/dashboard_provider.dart';
@@ -8,13 +9,13 @@ import 'package:recipe/shared/app_icons.dart';
 import 'package:recipe/shared/app_image.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
-import 'package:recipe/shared/extensions/string.dart';
 import 'package:recipe/shared/widget/app_transparent_button.dart';
 import 'package:recipe/shared/widget/custom_app_bar.dart';
 import 'package:recipe/shared/widget/gradient_background.dart';
 import 'package:recipe/shared/widget/gradient_container.dart';
 import 'package:recipe/shared/widget/icon_with_text.dart';
 import 'package:recipe/ui/collect_ingredient_view.dart';
+import 'package:recipe/ui/explore_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -26,8 +27,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    Provider.of<DashboardProvider>(context, listen: false)
-        .getUserRecipes(context);
+    Provider.of<DashboardProvider>(context, listen: false).getUserRecipes();
     super.initState();
   }
 
@@ -53,6 +53,7 @@ class _HomeViewState extends State<HomeView> {
                       hasBackButton: false,
                       waterMarked: false,
                       actions: AppImage(
+                        sematicsLabel: 'Profile Picture',
                         imageUrl: userController.currentUser?.imageUrl ??
                             AppIconData.user,
                         radius: 15,
@@ -85,6 +86,7 @@ class _HomeViewState extends State<HomeView> {
                               );
                             },
                             suffix: const AppIcon(
+                              excludeSemantics: true,
                               icon: AppIconData.forward,
                               size: 24,
                             ),
@@ -94,6 +96,7 @@ class _HomeViewState extends State<HomeView> {
                               shape: BoxShape.circle,
                               child: Center(
                                 child: AppIcon(
+                                  excludeSemantics: true,
                                   icon: AppIconData.redoSpark,
                                   size: 10,
                                 ),
@@ -126,83 +129,22 @@ class _HomeViewState extends State<HomeView> {
                               itemBuilder: (context, index) {
                                 final item =
                                     controller.sugestedRecipeList[index];
-                                return InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () {
+
+                                final userProvider = Provider.of<UserProvider>(
+                                    context,
+                                    listen: false);
+                                final recipes =
+                                    userProvider.currentUser!.recipes;
+                                item.dateSuggested = recipes
+                                    .firstWhereOrNull(
+                                        (element) => element.id == item.id)
+                                    ?.dateSuggested;
+                                return RecipeListCard(
+                                  item: item,
+                                  showUser: false,
+                                  onTap: (item) {
                                     controller.viewRecipeDetails(item, context);
                                   },
-                                  child: SizedBox(
-                                    height: 136,
-                                    child: Stack(
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              child: AppImage(
-                                                height: 136,
-                                                // width: 91,
-                                                imageUrl: item.imageUrl ?? '',
-                                              ),
-                                            ),
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              child: Container(
-                                                height: 206,
-                                                color: AppColors.primaryColor
-                                                    .withOpacity(0.4),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 8, horizontal: 10),
-                                            child: Flexible(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    item.name.toTitleCase,
-                                                    style: AppTextStyle.bold16
-                                                        .copyWith(
-                                                      fontSize: 14,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  if (item.dateSuggested !=
-                                                      null)
-                                                    const AppSpacing(v: 4),
-                                                  if (item.dateSuggested !=
-                                                      null)
-                                                    Text(
-                                                      item.dateSuggested!
-                                                          .toString()
-                                                          .formatDate,
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      // overflow: TextOverflow.ellipsis,
-                                                      style: AppTextStyle.bold16
-                                                          .copyWith(
-                                                        fontSize: 10,
-                                                      ),
-                                                    ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
                                 );
                               },
                             ),
@@ -222,7 +164,6 @@ class _HomeViewState extends State<HomeView> {
 
 class _GreetingCard extends StatelessWidget {
   const _GreetingCard({
-    super.key,
     required this.width,
     required this.isSmall,
     required this.name,
@@ -301,10 +242,12 @@ class _GreetingCard extends StatelessWidget {
         Positioned(
           right: 0,
           top: -22,
-          child: Image.asset(
-            'assets/images/boy-cook.png',
-            width: 131,
-            height: 128,
+          child: ExcludeSemantics(
+            child: Image.asset(
+              'assets/images/boy-cook.png',
+              width: 131,
+              height: 128,
+            ),
           ),
         ),
       ],
