@@ -6,6 +6,7 @@ import 'package:recipe/shared/app_icons.dart';
 import 'package:recipe/shared/app_image.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
+import 'package:recipe/shared/extensions/num.dart';
 import 'package:recipe/shared/extensions/string.dart';
 import 'package:recipe/shared/widget/custom_app_bar.dart';
 
@@ -69,7 +70,6 @@ class SuggestedVideosView extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                         child: AppImage(
                                           height: 206,
-                                          // width: 91,
                                           imageUrl: item.imageUrl,
                                         ),
                                       ),
@@ -77,7 +77,6 @@ class SuggestedVideosView extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                         child: Container(
                                           height: 206,
-                                          // width: 91,
                                           color: AppColors.primaryColor
                                               .withOpacity(
                                             0.4,
@@ -105,90 +104,64 @@ class SuggestedVideosView extends StatelessWidget {
                                         ),
                                         Align(
                                           alignment: Alignment.bottomCenter,
-                                          child: Flexible(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  item.title.toTitleCase,
-                                                  style: AppTextStyle.bold16
-                                                      .copyWith(
-                                                    fontSize: 14,
-                                                  ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                item.title.toTitleCase,
+                                                style: AppTextStyle.bold16
+                                                    .copyWith(
+                                                  fontSize: 14,
                                                 ),
-                                                // const Spacer(),
-                                                Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Text(
-                                                      '50k views',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    '${item.viewCount.minify} views',
+                                                    style: AppTextStyle.bold16
+                                                        .copyWith(
+                                                      fontSize: 10,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    height: 3,
+                                                    width: 3,
+                                                    margin: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 4),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Colors.white,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                  ),
+                                                  // const AppSpacing(h: 18),
+                                                  Expanded(
+                                                    child: Text(
+                                                      item.publishTime
+                                                          .formatDate,
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      // overflow: TextOverflow.ellipsis,
                                                       style: AppTextStyle.bold16
                                                           .copyWith(
                                                         fontSize: 10,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      height: 3,
-                                                      width: 3,
-                                                      margin: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 4),
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.white,
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                    ),
-                                                    // const AppSpacing(h: 18),
-                                                    Expanded(
-                                                      child: Text(
-                                                        item.publishTime
-                                                            .formatDate,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        // overflow: TextOverflow.ellipsis,
-                                                        style: AppTextStyle
-                                                            .bold16
-                                                            .copyWith(
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  // Stack(
-                                  //   children: [
-                                  //     ClipRRect(
-                                  //       borderRadius: BorderRadius.circular(12),
-                                  //       child: Container(
-                                  //         height: 206,
-                                  //         // width: 91,
-                                  //         color:
-                                  //             AppColors.primaryColor.withOpacity(
-                                  //           0.4,
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //     const AppIcon(
-                                  //       icon: AppIconData.youtube,
-                                  //       size: 28,
-                                  //       color: Colors.amber,
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ],
                               ),
                             ),

@@ -37,6 +37,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DashboardProvider()),
       ],
       child: MaterialApp(
+        // showSemanticsDebugger: true,
         debugShowCheckedModeBanner: false,
         scaffoldMessengerKey: scaffoldKey,
         theme: ThemeData(

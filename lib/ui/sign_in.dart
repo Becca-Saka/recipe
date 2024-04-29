@@ -52,7 +52,7 @@ class SignInView extends StatelessWidget {
                 ),
                 AppSpacing.v32(),
                 AppButton(
-                  onPressed: controller.logInWithGoogleUser,
+                  onPressed: () => controller.logInWithGoogleUser(context),
                   height: 56,
                   color: Colors.white,
                   isLoading: controller.isGoogleLoading,

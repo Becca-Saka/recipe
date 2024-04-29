@@ -69,17 +69,6 @@ class SuggestedRecipesView extends StatelessWidget {
                                     width: 91,
                                   ),
                                 ),
-                                // AppHero(
-                                //   tag: item.name,
-                                //   child: ClipRRect(
-                                //     borderRadius: BorderRadius.circular(12),
-                                //     child: Container(
-                                //       height: 95,
-                                //       width: 91,
-                                //       color: Colors.brown,
-                                //     ),
-                                //   ),
-                                // ),
                                 Flexible(
                                   child: Padding(
                                     padding: const EdgeInsets.all(12),

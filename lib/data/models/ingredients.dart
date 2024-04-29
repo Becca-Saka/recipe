@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:recipe/shared/extensions/double.dart';
+import 'package:recipe/shared/extensions/num.dart';
 
 class Ingredient {
   final String name;
   final dynamic rawQuantity;
   final String unit;
   final String category;
+  String imageUrl;
   // String get imageUrl => "https://loremflickr.com/320/240/${name.imagify}";
-  String get imageUrl =>
-      "http://127.0.0.1:5001/pixfork-a4f4d/us-central1/helloWorld?category=$category";
+  // String get imageUrl =>
+  //     "http://127.0.0.1:5001/pixfork-a4f4d/us-central1/helloWorld?category=$category";
   // String get imageUrl =>
   //     "https://img.spoonacular.com/ingredients_100x100/${name.imagify}.jpg";
 
@@ -22,6 +23,7 @@ class Ingredient {
     required this.rawQuantity,
     required this.category,
     this.unit = '',
+    this.imageUrl = '',
   });
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class Ingredient {
       rawQuantity: json['quantity'] ?? '1',
       unit: json['unit'] ?? 'pcs',
       category: json['category'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
     );
   }
 
@@ -43,24 +46,50 @@ class Ingredient {
   }
 }
 
+class CreatorModel {
+  final String id;
+  final String name;
+  final String? imageUrl;
+
+  CreatorModel({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+  });
+
+  factory CreatorModel.fromJson(Map<String, dynamic> json) {
+    return CreatorModel(
+      id: json['id'],
+      name: json['name'],
+      imageUrl: json['imageUrl'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      if (imageUrl != null) 'imageUrl': imageUrl,
+    };
+  }
+}
+
 class Recipe {
+  String? id;
   final String name;
   final String cookTime;
   final String description;
-  final String? imageUrl;
+  String? imageUrl;
   final List<String> instructions;
   final String instruction;
   final String tips;
   final List<Ingredient> ingredients;
-  final DateTime? dateSuggested;
-  final String? creatorId;
-  final String? creatorName;
-  final String? creatorImageUrl;
-
-  // String get localImageUrl =>
-  //     "https://loremflickr.com/320/240/${name.imagify}.jpg";
+  DateTime? dateSuggested;
+  List<CreatorModel> creators;
+  bool get isLocal => creators.isEmpty;
 
   Recipe({
+    required this.id,
     required this.name,
     required this.cookTime,
     required this.description,
@@ -70,13 +99,12 @@ class Recipe {
     required this.instruction,
     required this.imageUrl,
     required this.dateSuggested,
-    required this.creatorId,
-    required this.creatorImageUrl,
-    required this.creatorName,
+    required this.creators,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'id': id,
       'name': name,
       'cooktime': cookTime,
       'description': description,
@@ -84,12 +112,13 @@ class Recipe {
       'tips': tips,
       'ingredients': ingredients.map((x) => x.toJson()).toList(),
       'imageUrl': imageUrl,
-      'creatorName': creatorName,
+      'creators': creators.map((x) => x.toJson()).toList(),
     };
   }
 
   factory Recipe.fromJson(Map<String, dynamic> map) {
     return Recipe(
+      id: map['id'] as String?,
       name: map['name'] as String,
       cookTime: map['cooktime']?.toString() ?? '',
       imageUrl: map['imageUrl'] as String?,
@@ -112,9 +141,13 @@ class Recipe {
               ),
             )
           : [],
-      creatorId: map['creatorId'] as String?,
-      creatorImageUrl: map['creatorImageUrl'] as String?,
-      creatorName: map['creatorName'] as String?,
+      creators: map['creators'] != null
+          ? List<CreatorModel>.from(
+              (map['creators'] as List).map<CreatorModel>(
+                (x) => CreatorModel.fromJson(x as Map<String, dynamic>),
+              ),
+            )
+          : [],
     );
   }
 }

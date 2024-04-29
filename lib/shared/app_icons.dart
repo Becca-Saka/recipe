@@ -3,26 +3,35 @@ import 'package:flutter_svg/svg.dart';
 
 class AppIcon extends StatelessWidget {
   final String icon;
+  final String? sematicLabel;
+  final bool excludeSemantics;
   final double size;
   final Color? color;
   final VoidCallback? onTap;
   const AppIcon({
     required this.icon,
+    this.sematicLabel,
     super.key,
     this.size = 16,
     this.color,
     this.onTap,
+    this.excludeSemantics = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: SvgPicture.asset(
-        icon,
-        width: size,
-        height: size,
-        color: color,
+      child: Semantics(
+        label: sematicLabel,
+        excludeSemantics: excludeSemantics,
+        button: onTap != null,
+        child: SvgPicture.asset(
+          icon,
+          width: size,
+          height: size,
+          color: color,
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe/shared/app_icons.dart';
+import 'package:recipe/shared/app_image.dart';
 import 'package:recipe/shared/app_spacing.dart';
 import 'package:recipe/shared/app_text_style.dart';
 
@@ -54,8 +55,9 @@ class CustomAppBar extends StatelessWidget {
                         'Powered by ',
                         style: AppTextStyle.medium10,
                       ),
-                      Image.asset(
-                        'assets/images/gemini_logo.png',
+                      const AppImage(
+                        sematicsLabel: 'Gemini',
+                        imageUrl: 'assets/images/gemini_logo.png',
                         height: 19,
                         width: 39,
                       ),

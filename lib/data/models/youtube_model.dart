@@ -8,6 +8,7 @@ class YoutubeSearchItem {
   final String channelTitle;
   final String liveBroadcastContent;
   final String publishTime;
+  final int viewCount;
   YoutubeSearchItem({
     required this.id,
     required this.publishedAt,
@@ -18,10 +19,12 @@ class YoutubeSearchItem {
     required this.channelTitle,
     required this.liveBroadcastContent,
     required this.publishTime,
+    required this.viewCount,
   });
 
   factory YoutubeSearchItem.fromJson(Map<String, dynamic> json) {
     final snippet = json['snippet'];
+    final statistics = json['statistics'];
     final image = snippet['thumbnails']['default']['url'];
     return YoutubeSearchItem(
       id: json['id']['videoId'],
@@ -33,6 +36,7 @@ class YoutubeSearchItem {
       channelTitle: snippet['channelTitle'],
       liveBroadcastContent: snippet['liveBroadcastContent'],
       publishTime: snippet['publishTime'],
+      viewCount: int.tryParse(statistics['viewCount']) ?? 0,
     );
   }
 }
