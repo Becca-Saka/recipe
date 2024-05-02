@@ -81,12 +81,6 @@ class _CustomYoutubePlayerState extends State<CustomYoutubePlayer> {
             ? MediaQuery.of(context).size.aspectRatio
             : 9 / 16,
         child: YoutubePlayerBuilder(
-          onExitFullScreen: () {
-            // SystemChrome.setPreferredOrientations([
-            //   DeviceOrientation.portraitUp,
-            //   DeviceOrientation.portraitDown,
-            // ]);
-          },
           player: YoutubePlayer(
             controller: _controller,
             showVideoProgressIndicator: true,

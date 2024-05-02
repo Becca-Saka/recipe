@@ -6,13 +6,28 @@ import 'package:recipe/data/exceptions/auth_exception.dart';
 import 'package:recipe/data/models/ingredients.dart';
 import 'package:recipe/data/models/user_model.dart';
 
-class FirebaseService {
+abstract class IFirebaseService {
+  Future<bool> saveUserDetails(UserCredential crediential);
+  Future<UserModel> getCurrentUserData();
+  Future<bool> logInSilently();
+  Future<bool> updateUser(UserModel userModel);
+  Future<List<Recipe>> getAllRecipeData();
+  Future<List<Recipe>> getUserRecipeData();
+  Future<Recipe> saveUserRecipeData(Recipe recipe);
+  Future<void> signOut();
+  Stream<DocumentSnapshot<UserModel>> listenToCurrentUserData();
+  Future<bool> logInWithGoogleUser();
+  Future<bool> linkCurrentUserWithGoogle();
+}
+
+class FirebaseService implements IFirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   User? get currentUser => _auth.currentUser;
+  @override
   Future<bool> saveUserDetails(UserCredential crediential) async {
     final user = crediential.additionalUserInfo?.profile;
     final uid = crediential.user!.uid;
@@ -41,6 +56,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<UserModel> getCurrentUserData() async {
     try {
       final response = await _firestore
@@ -60,6 +76,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Stream<DocumentSnapshot<UserModel>> listenToCurrentUserData() {
     try {
       return _firestore
@@ -79,6 +96,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<bool> logInWithGoogleUser() async {
     try {
       await signOut();
@@ -104,6 +122,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<bool> linkCurrentUserWithGoogle() async {
     try {
       await _googleSignIn.signOut();
@@ -131,6 +150,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<bool> logInSilently() async {
     try {
       await signOut();
@@ -149,6 +169,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<void> signOut() async {
     await _auth.signOut();
   }
@@ -159,9 +180,9 @@ class FirebaseService {
         imageUrl: currentUser?.photoURL,
       );
 
+  @override
   Future<Recipe> saveUserRecipeData(Recipe recipe) async {
     final uid = currentUser!.uid;
-    // final uid = currentUser!.uid;
 
     try {
       final collection = _firestore.collection('Recipes');
@@ -194,6 +215,7 @@ class FirebaseService {
     }
   }
 
+  @override
   Future<List<Recipe>> getUserRecipeData() async {
     try {
       final result = await _firestore
@@ -210,6 +232,7 @@ class FirebaseService {
     return [];
   }
 
+  @override
   Future<List<Recipe>> getAllRecipeData() async {
     try {
       final result = await _firestore.collection('Recipes').get();
@@ -223,6 +246,7 @@ class FirebaseService {
     return [];
   }
 
+  @override
   Future<bool> updateUser(UserModel userModel) async {
     try {
       await _firestore

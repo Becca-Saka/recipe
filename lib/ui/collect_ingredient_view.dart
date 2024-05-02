@@ -22,6 +22,7 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
     Provider.of<RecipeProvider>(context, listen: false).initialize();
   }
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Consumer<RecipeProvider>(
@@ -31,41 +32,44 @@ class _CollectIngredientViewState extends State<CollectIngredientView> {
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  children: [
-                    const CustomAppBar(
-                      title: 'Generate a new recipe',
-                    ),
-                    const AppSpacing(v: 30),
-                    Stack(
-                      children: [
-                        AppInput(
-                          maxLines: 8,
-                          controller: controller.textEditingController,
-                          hintText:
-                              'Enter all the ingredients and quantity you currently have.. (E.g, 2 tubers of yam, 2 pieces of eggs)',
-                        ),
-                        Positioned(
-                          right: 0,
-                          bottom: 0,
-                          child: PushToTalk(
-                            onPressed: () => controller.startListening(),
-                            isNotListening: !controller.isListening,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const CustomAppBar(
+                        title: 'Generate a new recipe',
+                      ),
+                      const AppSpacing(v: 30),
+                      Stack(
+                        children: [
+                          AppInput(
+                            maxLines: 8,
+                            controller: controller.textEditingController,
+                            hintText:
+                                'Enter all the ingredients and quantity you currently have.. (E.g, 2 tubers of yam, 2 pieces of eggs)',
                           ),
-                        ),
-                      ],
-                    ),
-                    const AppSpacing(v: 20),
-                    AppButton(
-                      title: 'Generate recipe',
-                      isLoading: controller.loading,
-                      onPressed: () {
-                        if (controller.textEditingController.text.isNotEmpty) {
-                          controller.getIngredients(context);
-                        }
-                      },
-                    ),
-                  ],
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: PushToTalk(
+                              onPressed: () => controller.startListening(),
+                              isNotListening: !controller.isListening,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const AppSpacing(v: 20),
+                      AppButton(
+                        title: 'Generate recipe',
+                        isLoading: controller.loading,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            controller.getIngredients(context);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ));

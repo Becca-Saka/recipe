@@ -8,6 +8,7 @@ class PexelsApiService {
   final String _pexelsBaseUrl = "https://api.pexels.com/v1/search?";
   String get key => pexelsAPIKey;
 
+  ///Finds a picture by keyword on pexels and return a single image
   Future<String?> getPicture(String query) async {
     try {
       const queryFilters = "per_page=1";

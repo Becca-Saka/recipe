@@ -42,6 +42,7 @@ abstract class AppIconData {
   static const String back = '$_svgBase/back.svg';
   static const String redoSpark = '$_svgBase/redo-spark.svg';
   static const String bookmark = '$_svgBase/bookmark.svg';
+  static const String bookmarkFilled = '$_svgBase/bookmark-filled.svg';
   static const String edit = '$_svgBase/edit.svg';
   static const String film = '$_svgBase/film.svg';
   static const String google = '$_svgBase/google.svg';

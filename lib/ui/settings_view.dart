@@ -22,7 +22,6 @@ class SettingsView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: SafeArea(
               child: Column(
-                // mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CustomAppBar(
                     title: 'Settings',

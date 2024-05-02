@@ -9,9 +9,6 @@ class AppSnackBar {
     scaffoldKey.currentState?.showSnackBar(
       SnackBar(
         backgroundColor: color,
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(2),
-        // ),
         duration: const Duration(seconds: 5),
         content: child,
       ),

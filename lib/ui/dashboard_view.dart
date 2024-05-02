@@ -59,18 +59,13 @@ class DashboardView extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: ColoredBox(
-            // height: 50,
             color: AppColors.primaryColor.withOpacity(0.9),
             child: Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).padding.bottom,
               ),
               child: Container(
-                // height: 50,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  // vertical: 20,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -116,7 +111,6 @@ class DashboardView extends StatelessWidget {
             height: 4,
             width: 60,
             decoration: BoxDecoration(
-              // shape: BoxShape.circle,
               borderRadius: const BorderRadius.vertical(
                 bottom: Radius.circular(10),
               ),

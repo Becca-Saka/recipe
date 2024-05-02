@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe/data/providers/user_provider.dart';
+import 'package:recipe/shared/app_image.dart';
 import 'package:recipe/shared/widget/gradient_background.dart';
 
 class SplashView extends StatefulWidget {
@@ -46,9 +47,9 @@ class _SplashViewState extends State<SplashView> {
         ),
       ],
       backgroundColor: const Color(0xFF131314),
-      child: Center(
-        child: Image.asset(
-          'assets/images/app_logo.png',
+      child: const Center(
+        child: AppImage(
+          imageUrl: 'assets/images/app_logo.png',
           height: 80,
           width: 80,
           fit: BoxFit.cover,

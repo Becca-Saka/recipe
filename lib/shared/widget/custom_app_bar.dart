@@ -47,21 +47,26 @@ class CustomAppBar extends StatelessWidget {
             if (actions != null) actions!,
             if (waterMarked)
               waterMark ??
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Powered by ',
-                        style: AppTextStyle.medium10,
+                  Semantics(
+                    label: 'Powered by Gemini',
+                    child: ExcludeSemantics(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'Powered by ',
+                            style: AppTextStyle.medium10,
+                          ),
+                          const AppImage(
+                            excludeSematics: true,
+                            imageUrl: 'assets/images/gemini_logo.png',
+                            height: 19,
+                            width: 39,
+                          ),
+                        ],
                       ),
-                      const AppImage(
-                        sematicsLabel: 'Gemini',
-                        imageUrl: 'assets/images/gemini_logo.png',
-                        height: 19,
-                        width: 39,
-                      ),
-                    ],
+                    ),
                   ),
           ],
         ),

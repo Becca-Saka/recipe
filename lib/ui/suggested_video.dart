@@ -25,10 +25,11 @@ class SuggestedVideosView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomAppBar(
+                  const CustomAppBar(
                     title: 'Suggested videos',
-                    waterMark: Image.asset(
-                      'assets/images/youtube_logo.png',
+                    waterMark: AppImage(
+                      sematicsLabel: 'Youtube Logo',
+                      imageUrl: 'assets/images/youtube_logo.png',
                       height: 14,
                       width: 63,
                     ),
@@ -140,14 +141,12 @@ class SuggestedVideosView extends StatelessWidget {
                                                       shape: BoxShape.circle,
                                                     ),
                                                   ),
-                                                  // const AppSpacing(h: 18),
                                                   Expanded(
                                                     child: Text(
                                                       item.publishTime
                                                           .formatDate,
                                                       textAlign:
                                                           TextAlign.start,
-                                                      // overflow: TextOverflow.ellipsis,
                                                       style: AppTextStyle.bold16
                                                           .copyWith(
                                                         fontSize: 10,
