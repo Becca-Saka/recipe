@@ -23,8 +23,14 @@ To get started with Recipé, follow these steps:
 5. Or Run via the already defined vscode `launch.json` file
 
 
-### Videos:
-The videos walkthrough can be found here: [https://www.youtube.com/watch?v=NWW75DXpsRI](https://www.youtube.com/watch?v=NWW75DXpsRI)
+### Media:
+#### Image 
+
+![banner](screenshots/banner.jpg)
+
+#### Video
+
+The video walkthrough can be found here: [https://www.youtube.com/watch?v=NWW75DXpsRI](https://www.youtube.com/watch?v=NWW75DXpsRI)
 
 ### Team Members:
 - [James Otemolu](https://www.linkedin.com/in/jamesotemolu)  - Product Designer
