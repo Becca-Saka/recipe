@@ -30,7 +30,7 @@ To get started with Recipé, follow these steps:
 
 #### Video
 
-The video walkthrough can be found here: [https://www.youtube.com/watch?v=NWW75DXpsRI](https://www.youtube.com/watch?v=NWW75DXpsRI)
+The video walkthrough can be found here: [https://vimeo.com/942154238/3428fce671?share=copy](https://vimeo.com/942154238/3428fce671?share=copy)
 
 ### Team Members:
 - [James Otemolu](https://www.linkedin.com/in/jamesotemolu)  - Product Designer
