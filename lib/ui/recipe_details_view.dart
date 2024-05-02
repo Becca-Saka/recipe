@@ -38,7 +38,6 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                   floating: false,
                   pinned: true,
                   snap: false,
-                  // collapsedHeight: 300,
                   backgroundColor: Colors.black,
                   leadingWidth: 0,
                   automaticallyImplyLeading: false,
@@ -46,7 +45,6 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
                   flexibleSpace: LayoutBuilder(builder:
                       (BuildContext context, BoxConstraints constraints) {
                     final top = constraints.biggest.height;
-                    // const collapsed = false;
                     final collapsed = top ==
                         MediaQuery.of(context).padding.top + kToolbarHeight;
 
@@ -234,13 +232,11 @@ class _RecipeDetailsViewState extends State<RecipeDetailsView> {
             horizontal: 12,
           ),
           suffix: AppIcon(
-            icon: AppIconData.bookmark,
+            icon: isSaved ? AppIconData.bookmarkFilled : AppIconData.bookmark,
             color: isSaved ? Colors.yellow : null,
             excludeSemantics: true,
           ),
-          onPressed: () {
-            controller.saveRecipe(controller.selectedRecipe!);
-          },
+          onPressed: () => controller.saveRecipe(controller.selectedRecipe!),
         ),
         const AppSpacing(h: 6),
         if (recipe.isLocal)

@@ -1,3 +1,4 @@
+///Handles parsing json data resturn from [GeminiService]
 class CustomJSONParser {
   int _index = 0;
   final String _source;

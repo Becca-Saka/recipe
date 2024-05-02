@@ -34,6 +34,7 @@ class RecipeProvider extends ChangeNotifier {
   int start = 0;
   int end = 0;
   bool loading = false;
+
   void initialize() {
     debugPrint('object');
     _initGemini();
@@ -76,27 +77,10 @@ class RecipeProvider extends ChangeNotifier {
             .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
             .toList();
         notifyListeners();
-        // _getIngredientImage();
         Navigator.of(context).push(
             MaterialPageRoute(builder: (_) => const ConfirmIngredientView()));
       } else {
         debugPrint('Empty list $text');
-      }
-    }
-  }
-
-  Future<void> _getIngredientImage() async {
-    if (ingredientList.isNotEmpty) {
-      for (var element in ingredientList) {
-        final image = await PexelsApiService().getPicture(element.name);
-
-        if (image != null) {
-          int index = ingredientList.indexOf(element);
-          ingredientList[index].imageUrl = image;
-          // element.imageUrl = image;
-
-          notifyListeners();
-        }
       }
     }
   }
@@ -109,19 +93,15 @@ class RecipeProvider extends ChangeNotifier {
       debugPrint('${text.length} $firstJsonBracket $lastJsonBracket');
       if (lastJsonBracket == -1) lastJsonBracket = text.length;
       if (firstJsonBracket != -1 && lastJsonBracket != -1) {
+        text = text.substring(firstJsonBracket, lastJsonBracket + 1);
         var myParser = jsonDecode(text.replaceAll('\\n', ' '));
-        log('From Pur Decoder $myParser with ${myParser.runtimeType}');
         return myParser as Map<String, dynamic>;
       } else {
-        log('From Invalid json ');
-
         return _extractCustomJson(text);
       }
     } catch (e) {
-      log('user error $e');
       return _extractCustomJson(text);
     }
-    // return null;
   }
 
   Map? _extractCustomJson(String text) {
@@ -141,7 +121,6 @@ class RecipeProvider extends ChangeNotifier {
 
       return parsedObject as Map<String, dynamic>;
     } else {
-      debugPrint('Malformed list $text');
       AppSnackBar.showErrorCustomSnackbar(
           message: 'Could not parse ingredients, try again');
     }
@@ -191,8 +170,6 @@ class RecipeProvider extends ChangeNotifier {
 
   Future<void> _getRecipes(String text, BuildContext context) async {
     final json = _extractJson(text);
-    // final json = getJsonFromString(text);
-
     if (json != null && json.isNotEmpty) {
       final convertedList = json['recipes'] as List<dynamic>;
 

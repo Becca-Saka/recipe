@@ -105,7 +105,7 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           const Divider(height: 42),
                           TextWithIcon(
-                            text: 'Previous recipes',
+                            text: 'Saved recipes',
                             icon: AppIconData.timePast,
                             textStyle: AppTextStyle.medium14,
                           ),
@@ -239,15 +239,14 @@ class _GreetingCard extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
+        const Positioned(
           right: 0,
           top: -22,
-          child: ExcludeSemantics(
-            child: Image.asset(
-              'assets/images/boy-cook.png',
-              width: 131,
-              height: 128,
-            ),
+          child: AppImage(
+            excludeSematics: true,
+            imageUrl: 'assets/images/boy-cook.png',
+            width: 131,
+            height: 128,
           ),
         ),
       ],

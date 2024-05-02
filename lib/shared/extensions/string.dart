@@ -7,7 +7,6 @@ extension StringExtension on String {
       .split(' ')
       .map((str) => str.toCapitalized)
       .join(' ');
-  // String get spaced => this;
 
   String get spaced => replaceAll('\\n ', '\n')
       .replaceAll(r'\n ', '\n')

@@ -8,29 +8,6 @@ abstract class AppTextStyle {
       letterSpacing: -0.3,
       color: Colors.white);
 
-  // ///SF Pro 12
-  // static TextStyle get bodySmall => _baseTextStyle.copyWith(fontSize: 12);
-
-  // ///SF Pro Bold 12
-  // static TextStyle get bodySmallBold =>
-  //     bodySmall.copyWith(fontWeight: AppFontWeight.bold);
-
-  // ///SF Pro semibold 12
-  // static TextStyle get bodySmallSemiBold =>
-  //     bodySmall.copyWith(fontWeight: AppFontWeight.semiBold);
-  // static TextStyle get bodySmallMedium =>
-  //     bodySmall.copyWith(fontWeight: AppFontWeight.medium);
-  // ///SF Pro 14
-  // static TextStyle get titleSmall => _baseTextStyle.copyWith(fontSize: 14);
-
-  // ///SF Pro semibold 14
-  // static TextStyle get titleSmallSemiBold =>
-  //     titleSmall.copyWith(fontWeight: AppFontWeight.semiBold);
-
-  // ///SF Pro medium 14
-  // static TextStyle get titleSmallMedium =>
-  //     titleSmall.copyWith(fontWeight: AppFontWeight.medium);
-
   ///SF Pro 10
   static TextStyle get regular10 => _baseTextStyle.copyWith(fontSize: 10);
 

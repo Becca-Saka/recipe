@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipe/shared/app_colors.dart';
 import 'package:recipe/shared/app_icons.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -10,6 +11,7 @@ class AppImage extends StatelessWidget {
     this.sematicsLabel,
     this.height,
     this.radius = 5,
+    this.fit,
     this.excludeSematics = false,
   });
 
@@ -19,6 +21,7 @@ class AppImage extends StatelessWidget {
   final double? width;
   final double? height;
   final double radius;
+  final BoxFit? fit;
   bool get isAsset => imageUrl.startsWith('assets');
   @override
   Widget build(BuildContext context) {
@@ -29,24 +32,32 @@ class AppImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius),
         child: Builder(builder: (context) {
           if (isAsset) {
-            return Container(
+            if (imageUrl.endsWith('.svg')) {
+              return Container(
+                width: width,
+                height: height,
+                color: AppColors.lightGrey,
+                child: Center(
+                  child: AppIcon(
+                    icon: imageUrl,
+                    size: 12,
+                  ),
+                ),
+              );
+            }
+
+            return Image.asset(
+              imageUrl,
               width: width,
               height: height,
-              color: const Color(0xFFEEEEEE),
-              // color: Colors.grey.shade200,
-              child: Center(
-                child: AppIcon(
-                  icon: imageUrl,
-                  size: 12,
-                ),
-              ),
+              fit: fit,
             );
           }
           return Image.network(
             imageUrl,
             width: width,
             height: height,
-            fit: BoxFit.cover,
+            fit: fit ?? BoxFit.cover,
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) {
                 return child;
@@ -65,8 +76,7 @@ class AppImage extends StatelessWidget {
               return Container(
                 width: width,
                 height: height,
-                color: const Color(0xFFEEEEEE),
-                // color: Colors.grey.shade200,
+                color: AppColors.lightGrey,
                 child: const Center(
                   child: AppIcon(
                     icon: AppIconData.picture,
