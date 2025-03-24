@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:recipe/data/tokens.dart';
 
 class PexelsApiService {
   final String _pexelsBaseUrl = "https://api.pexels.com/v1/search?";
-  String get key => pexelsAPIKey;
+  String get key => const String.fromEnvironment('PEXELS_API_KEY');
 
   ///Finds a picture by keyword on pexels and return a single image
   Future<String?> getPicture(String query) async {

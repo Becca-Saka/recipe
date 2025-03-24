@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:recipe/data/tokens.dart';
 import 'package:recipe/shared/prompts.dart';
 
 enum QueryType { ingredients, recipe }
@@ -17,7 +16,7 @@ class GeminiService {
   void init() {
     model = GenerativeModel(
       model: 'gemini-1.0-pro',
-      apiKey: geminiAPIKey,
+      apiKey: const String.fromEnvironment('GEMINI_API_KEY'),
     );
 
     chat = model.startChat();

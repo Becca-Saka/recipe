@@ -3,11 +3,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:recipe/data/tokens.dart';
 
 class YoutubeApiService {
   final String _youtubeBaseUrl = "https://www.googleapis.com/youtube/v3/";
-  String get key => youtubeAPIKey;
+  String get key => const String.fromEnvironment('YOUTUBE_API_KEY');
   // BY8IG_rMmdcdGDgvuwByStln_eY
   // String get key => const String.fromEnvironment('YOUTUBE_API_KEY');
   Future<List> getVideosDetails(Map<String, dynamic> videoData) async {
