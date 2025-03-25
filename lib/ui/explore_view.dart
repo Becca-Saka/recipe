@@ -24,7 +24,9 @@ class ExploreView extends StatefulWidget {
 class _ExploreViewState extends State<ExploreView> {
   @override
   void initState() {
-    Provider.of<DashboardProvider>(context, listen: false).getAllRecipes();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<DashboardProvider>(context, listen: false).getAllRecipes();
+    });
 
     super.initState();
   }

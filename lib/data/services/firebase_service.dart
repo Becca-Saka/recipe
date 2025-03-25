@@ -155,11 +155,10 @@ class FirebaseService implements IFirebaseService {
     try {
       await signOut();
       final crediential = await FirebaseAuth.instance.signInAnonymously();
-      print(crediential);
+      debugPrint(crediential.toString());
       await saveUserDetails(crediential);
       return true;
     } on FirebaseAuthException catch (e) {
-      // debugPrint('${e.message}');
       final message = AuthExceptionHandler.handleFirebaseAuthException(e);
       debugPrint('$message');
       throw AuthException(message);
